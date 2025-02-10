@@ -1,0 +1,20 @@
+.landing-container {
+  width: 100%;
+  padding: 0;
+}
+
+.landing-img {
+  max-width: 100%;
+}
+
+.landing-title {
+  font-family: "Rakkas", serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 8rem;
+  position: absolute;
+  z-index: 1;
+  top: 50%;
+  left: 10%;
+  color: var(--color-dark-blue);
+}

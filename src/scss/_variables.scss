@@ -1,0 +1,13 @@
+:root {
+  --color-light: #F8FAFC;
+  --color-secondary: #D9EAFD;
+  --color-primary: #BCCCDC;
+  --color-dark: #9AA6B2;
+  --color-dark-blue: #506D84;
+}
+
+/* Optional: Predefined Themes */
+.light-theme {
+  --bg-color: var(--color-light);
+  --text-color: var(--color-dark);
+}
