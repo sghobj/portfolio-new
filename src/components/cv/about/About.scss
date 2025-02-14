@@ -1,0 +1,17 @@
+.about-me-text{
+  padding: 0 3rem;
+  text-align: justify;
+  font-family: "Jura", serif;
+  font-optical-sizing: auto;
+  font-weight: 300;
+  font-style: normal;
+  font-size: 1rem;
+}
+
+/* Very Small Screens */
+@media (max-width: 840px) {
+
+  .about-me-text{
+    font-size: 0.8rem;
+  }
+}

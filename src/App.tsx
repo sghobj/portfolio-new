@@ -1,17 +1,12 @@
-
-import './App.css'
+import './App.scss'
 import './scss/_variables.scss'
 import { Router } from './router/Router'
 
-function App() {
+export const App = () => {
 
   return (
-    <>
       <div className={'main-container'}>
           <Router />
       </div>
-    </>
   )
 }
-
-export default App
