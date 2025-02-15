@@ -1,20 +1,96 @@
 .landing-container {
-  width: 100%;
-  padding: 0;
+  width: 100vw;
+  height: 100vh; /* Full-screen height */
+  display: flex;
+  align-items: center;
+  position: relative;
+  background-image: url("https://res.cloudinary.com/dsyxohckg/image/upload/v1656873333/Me/masters.jpg");
+  background-size: cover;
+  background-position: center;
+  color: var(--color-primary);
+  padding: 5%;
 }
 
-.landing-img {
-  max-width: 100%;
+/* Hide img tag on large screens */
+.landing-container img {
+  display: none;
 }
 
+.landing-text-div {
+  height: fit-content;
+  width: fit-content;
+  display: block;
+  margin: auto 0;
+  text-align: left;
+}
+
+/* Text overlay on large screens */
 .landing-title {
   font-family: "Rakkas", serif;
   font-weight: 400;
   font-style: normal;
-  font-size: 8rem;
-  position: absolute;
+  font-size: 6rem;
+  position: relative;
   z-index: 1;
-  top: 50%;
-  left: 10%;
-  color: var(--color-dark-blue);
+}
+
+.landing-subtitle {
+  z-index: 1;
+  font-weight: 300;
+  font-style: normal;
+  font-size: 2rem;
+}
+
+/* medium screens */
+@media (max-width: 1452px) {
+  .landing-title {
+    font-size: 3rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .landing-subtitle {
+    z-index: 1;
+    font-weight: 300;
+    font-style: normal;
+    font-size: 1.5rem;
+  }
+}
+
+/* small screens */
+@media (max-width: 840px) {
+  .landing-container {
+    background-image: none; /* Remove background image */
+    flex-direction: column;
+    padding: 0;
+    height: auto;
+  }
+
+  .landing-container img {
+    display: block; /* Show img */
+    width: 100%;
+    height: auto;
+  }
+
+  .landing-title {
+    font-size: 4rem;
+    color: var(--color-dark-blue)
+  }
+
+  .landing-text-div {
+    height: fit-content;
+    max-width: 100%;
+    display: block;
+    text-align: center;
+    margin: 0;
+    padding: 1rem;
+  }
+}
+
+/* Very Small Screens */
+@media (max-width: 410px) {
+
+  .landing-title {
+    font-size: 3rem;
+  }
 }
