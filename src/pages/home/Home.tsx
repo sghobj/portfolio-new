@@ -19,7 +19,7 @@ export const Home = () => {
                     <h3 className={'landing-subtitle'}>Software Engineer</h3>
                 </div>
             </div>
-            {isSmallScreen ? <Cv /> : null}
+            {isSmallScreen ? <Cv/> : null}
         </>
     )
 }
