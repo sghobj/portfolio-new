@@ -30,11 +30,11 @@ export const Cv = () => {
         <>
             <div className={"cv-section"}>
                 <h1 className={'section-header'}>About</h1>
-                <About text = {about} />
+                { about ? <About text = {about} /> : null }
             </div>
             <div className={"cv-section"}>
                 <h1 className={'section-header'}>Skills</h1>
-                <Skills skills={skills} />
+                { skills ? <Skills skills={skills} /> : null }
             </div>
 
         </>
