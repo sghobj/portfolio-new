@@ -7,13 +7,10 @@ export const Navbar = () => {
             <div className="container-fluid">
                 <ul className="navbar-nav">
                     <li className="nav-item">
-                        <a className="nav-link active" aria-current="page" href="/">Home</a>
+                        <a className="nav-link active" href="/">Home</a>
                     </li>
                     <li className="nav-item">
                         <a className="nav-link" href="/cv">CV</a>
-                    </li>
-                    <li className="nav-item">
-                        <a className="nav-link" href="#">Pricing</a>
                     </li>
                 </ul>
             </div>
