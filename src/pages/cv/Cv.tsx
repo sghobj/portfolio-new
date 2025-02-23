@@ -1,42 +1,51 @@
+import {useEffect, useState} from "react";
+import { useQuery } from "@apollo/client";
 import {About} from "../../components/cv/about/About.tsx";
 import {Skills} from "../../components/cv/skills/Skills.tsx";
 import './Cv.scss'
-import {useEffect, useState} from "react";
-import axiosInstance from "../../utils/axiosInstance.ts";
+import { CV_QUERY } from "../../queries/cv-query.ts";
 
 
 export const Cv = () => {
     const [skills, setSkills] = useState([])
+    const [education, setEducation] = useState([])
+    const [experiences, setExperiences] = useState([])
     const [about, setAbout] = useState('')
 
+    const { data, error } = useQuery(CV_QUERY);
+
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await axiosInstance.get('/api/cv?populate=*');
-                const {about, skills} = response.data.data
-                setAbout(about)
-                setSkills(skills)
+        if(data && data.cv) {
+            const { skills, education, about, experiences} = data.cv
 
-                console.log(skills)
-            } catch (err) {
-                console.log('Error fetching data');
-            }
-        };
-        fetchData();
-    }, []);
+            setSkills(skills)
+            setEducation(education)
+            setExperiences(experiences)
+            setAbout(about)
 
+        } else if(error) {
+            console.log(error)
+        }
+    }, [data, error])
 
-    return(
-        <>
-            <div className={"cv-section"}>
-                <h1 className={'section-header'}>About</h1>
-                { about ? <About text = {about} /> : null }
+    useEffect(() => {
+        console.log(education)
+        console.log(experiences)
+    }, [experiences, education])
+    return (
+        <div className={'cv-page-container'}>
+            <div className="container-fluid">
+                <div className="row">
+                    <div className={"col-lg cv-section"}>
+                        <h1 className={'section-header'}>About</h1>
+                        {about ? <About text={about}/> : null}
+                    </div>
+                    <div className={"col-lg cv-section"}>
+                        <h1 className={'section-header'}>Skills</h1>
+                        {skills ? <Skills skills={skills}/> : null}
+                    </div>
+                </div>
             </div>
-            <div className={"cv-section"}>
-                <h1 className={'section-header'}>Skills</h1>
-                { skills ? <Skills skills={skills} /> : null }
-            </div>
-
-        </>
+        </div>
     )
 }
