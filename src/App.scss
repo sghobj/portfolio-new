@@ -8,6 +8,22 @@
   position: absolute;
   z-index: 1;
   top: 1%;
-  left: 5%;
+  left: 4%;
+}
+
+/* Very Small Screens */
+@media (max-width: 840px) {
+
+  .landing-buttons-div{
+    left: 5%;
+  }
+}
+
+/* Medium Screens */
+@media (max-width: 1452px) {
+
+  .landing-buttons-div{
+    left: 3%;
+  }
 }
 
