@@ -1,4 +1,5 @@
 import './Education.scss'
+import {formatDate} from "../../../utils/general.ts";
 
 export type EducationType = {
     from: string;
@@ -20,7 +21,7 @@ export const Education = ({education}: EducationProps) => {
                     {education.map((item, index) => {
                         return (
                     <div className={"row border-bottom py-3"} key={index}>
-                        <div className={'date-col col-12 col-md-3'}>{item.from} - {item.to ? item.to : "now"}</div>
+                        <div className={'date-col col-12 col-md-3'}>{formatDate(item.from)} - {item.to ? formatDate(item.to) : "now"}</div>
                         <div className={'specialty-col col-12 col-md-6'}>
                             <h5 className={'institute'}>{item.institute}</h5>
                             <h6 className={'specialty'}>{item.specialty}</h6>
