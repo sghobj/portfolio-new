@@ -12,7 +12,8 @@ export const App = () => {
 
     return (
       <div className={'main-container'}>
-          {!isSmallScreen ? <div className={'landing-buttons-div'}>
+          {!isSmallScreen ?
+              <div className={'landing-buttons-div'}>
               <Navbar />
           </div> : null }
           <Router />

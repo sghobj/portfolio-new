@@ -4,6 +4,8 @@ import {About} from "../../components/cv/about/About.tsx";
 import {Skills} from "../../components/cv/skills/Skills.tsx";
 import './Cv.scss'
 import { CV_QUERY } from "../../queries/cv-query.ts";
+import {Education} from "../../components/cv/education/Education.tsx";
+import {Experience} from "../../components/cv/experience/Experience.tsx";
 
 
 export const Cv = () => {
@@ -18,6 +20,8 @@ export const Cv = () => {
         if(data && data.cv) {
             const { skills, education, about, experiences} = data.cv
 
+
+            console.log(experiences)
             setSkills(skills)
             setEducation(education)
             setExperiences(experiences)
@@ -28,10 +32,6 @@ export const Cv = () => {
         }
     }, [data, error])
 
-    useEffect(() => {
-        console.log(education)
-        console.log(experiences)
-    }, [experiences, education])
     return (
         <div className={'cv-page-container'}>
             <div className="container-fluid">
@@ -43,6 +43,18 @@ export const Cv = () => {
                     <div className={"col-lg cv-section"}>
                         <h1 className={'section-header'}>Skills</h1>
                         {skills ? <Skills skills={skills}/> : null}
+                    </div>
+                </div>
+                <div className="row">
+                    <div className={"col-lg cv-section experiences"}>
+                        <h1 className={'section-header'}>Experience</h1>
+                        {experiences ? <Experience experiences={experiences}/> : null}
+                    </div>
+                </div>
+                <div className="row">
+                    <div className={"col-lg cv-section education"}>
+                        <h1 className={'section-header'}>Education</h1>
+                        {education ? <Education education={education}/> : null}
                     </div>
                 </div>
             </div>
