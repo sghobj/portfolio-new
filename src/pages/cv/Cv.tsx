@@ -6,6 +6,7 @@ import './Cv.scss'
 import { CV_QUERY } from "../../queries/cv-query.ts";
 import {Education} from "../../components/cv/education/Education.tsx";
 import {Experience} from "../../components/cv/experience/Experience.tsx";
+import {Spinner} from "../../components/Spinner.tsx";
 
 
 export const Cv = () => {
@@ -14,7 +15,8 @@ export const Cv = () => {
     const [experiences, setExperiences] = useState([])
     const [about, setAbout] = useState('')
 
-    const { data, error } = useQuery(CV_QUERY);
+
+    const { loading, data, error } = useQuery(CV_QUERY);
 
     useEffect(() => {
         if(data && data.cv) {
@@ -34,6 +36,9 @@ export const Cv = () => {
 
     return (
         <div className={'cv-page-container'}>
+            {loading ?
+                <Spinner />
+                :
             <div className="container-fluid">
                 <div className="row">
                     <div className={"col-lg cv-section"}>
@@ -58,6 +63,7 @@ export const Cv = () => {
                     </div>
                 </div>
             </div>
+            }
         </div>
     )
 }
