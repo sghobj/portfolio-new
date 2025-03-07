@@ -3,6 +3,8 @@ import { gql } from '@apollo/client';
 export const CV_QUERY = gql`
   query CV_QUERY {
     cv {
+      name
+      subtitle
       about
       coverImageUrl
       experiences {
