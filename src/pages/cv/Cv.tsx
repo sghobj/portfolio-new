@@ -22,8 +22,6 @@ export const Cv = () => {
         if(data && data.cv) {
             const { skills, education, about, experiences} = data.cv
 
-
-            console.log(experiences)
             setSkills(skills)
             setEducation(education)
             setExperiences(experiences)
