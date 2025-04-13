@@ -4,7 +4,7 @@ import {Cv} from "../cv/Cv.tsx";
 import {useQuery} from "@apollo/client";
 import {CV_QUERY} from "../../queries/cv-query.ts";
 import {useEffect, useState} from "react";
-import {Spinner} from "../../components/Spinner.tsx";
+import {Spinner} from "../../components/spinner/Spinner.tsx";
 
 export const Home = () => {
 
@@ -27,7 +27,7 @@ export const Home = () => {
     const isSmallScreen = screenSize.width < 840
 
     return (
-        <section>
+        <>
             {!loading ?
                 <>
                     <div className=".container landing-container">
@@ -41,7 +41,7 @@ export const Home = () => {
                 </> :
                 <Spinner/>
             }
-        </section>
+        </>
     )
 }
 
