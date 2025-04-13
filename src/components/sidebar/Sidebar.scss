@@ -1,0 +1,73 @@
+/* Sidebar default styles */
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 15rem;
+  height: 100%;
+  background-color: var(--raisin-black);
+  color: white;
+  padding: 5rem 1rem;
+  transition: width 0.3s ease-in-out;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1); /* <- sidebar shadow */
+  z-index: 10;
+}
+
+/* Collapsed Sidebar */
+.sidebar.collapsed {
+  width: 0;
+  display: none; /* This hides the sidebar when collapsed */
+  padding: 0;
+}
+
+.sidebar.collapsed .toggle-btn {
+  color: black;
+}
+
+.nav-item {
+  margin: 0.2rem 0;
+}
+
+.sidebar .toggle-btn {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+  background: none;
+  border: none;
+  padding: 1rem;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.nav {
+  width: 100%;
+}
+
+/* Navigation links */
+.sidebar .nav-link {
+  display: flex;
+  align-items: center;
+  color: white;
+  padding: 1rem;
+  width: 100%;
+  text-decoration: none;
+  border-radius: 0.4rem;
+}
+
+.sidebar .nav-link:hover {
+  background-color: var(--midnight-green-1);
+  color: white;
+  border-radius: 0.4rem;
+}
+
+/* Icons in the sidebar */
+.sidebar .nav-icon {
+  font-size: 20px;
+  margin-right: 10px;
+}
+
+/* Hide text when sidebar is collapsed */
+.sidebar.collapsed .nav-link {
+  display: none;
+}

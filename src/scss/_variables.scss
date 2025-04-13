@@ -4,10 +4,102 @@
   --color-primary: #BCCCDC;
   --color-dark: #9AA6B2;
   --color-dark-blue: #506D84;
+  --midnight-green-2: #015D73ff;
+  --midnight-green: #00556Aff;
+  --midnight-green-1: #006277;
+  --taupe-gray: #857B7Dff;
+  --rosy-brown: #C49F99ff;
+  --raisin-black: #27242Aff;
+
+  --rgba-raisin-black-10: rgba(39, 36, 42, 0.1);
+  --rgba-raisin-black-20: rgba(39, 36, 42, 0.2);
+  --rgba-raisin-black-30: rgba(39, 36, 42, 0.3);
+  --rgba-raisin-black-40: rgba(39, 36, 42, 0.4);
+  --rgba-raisin-black-50: rgba(39, 36, 42, 0.5);
+  --rgba-raisin-black-60: rgba(39, 36, 42, 0.6);
+  --rgba-raisin-black-70: rgba(39, 36, 42, 0.7);
+  --rgba-raisin-black-80: rgba(39, 36, 42, 0.8);
+  --rgba-raisin-black-90: rgba(39, 36, 42, 0.9);
+
+  --rgba-midnight-green-10: rgba(0, 85, 106, 0.1);
+  --rgba-midnight-green-20: rgba(0, 85, 106, 0.2);
+  --rgba-midnight-green-30: rgba(0, 85, 106, 0.3);
+  --rgba-midnight-green-40: rgba(0, 85, 106, 0.4);
+  --rgba-midnight-green-50: rgba(0, 85, 106, 0.5);
+  --rgba-midnight-green-60: rgba(0, 85, 106, 0.6);
+  --rgba-midnight-green-70: rgba(0, 85, 106, 0.7);
+  --rgba-midnight-green-80: rgba(0, 85, 106, 0.8);
+  --rgba-midnight-green-90: rgba(0, 85, 106, 0.9);
+
+  $midnight-green-2: rgba(1, 93, 115, 1);
+
+  --rgba-taupe-gray-10: rgba(133, 123, 125, 0.1);
+  --rgba-taupe-gray-20: rgba(133, 123, 125, 0.2);
+  --rgba-taupe-gray-30: rgba(133, 123, 125, 0.3);
+  --rgba-taupe-gray-40: rgba(133, 123, 125, 0.4);
+  --rgba-taupe-gray-50: rgba(133, 123, 125, 0.5);
+  --rgba-taupe-gray-60: rgba(133, 123, 125, 0.6);
+  --rgba-taupe-gray-70: rgba(133, 123, 125, 0.7);
+  --rgba-taupe-gray-80: rgba(133, 123, 125, 0.8);
+  --rgba-taupe-gray-90: rgba(133, 123, 125, 0.9);
+
+  --rgba-rosy-brown-10: rgba(196, 159, 153, 0.1);
+  --rgba-rosy-brown-20: rgba(196, 159, 153, 0.2);
+  --rgba-rosy-brown-30: rgba(196, 159, 153, 0.3);
+  --rgba-rosy-brown-40: rgba(196, 159, 153, 0.4);
+  --rgba-rosy-brown-50: rgba(196, 159, 153, 0.5);
+  --rgba-rosy-brown-60: rgba(196, 159, 153, 0.6);
+  --rgba-rosy-brown-70: rgba(196, 159, 153, 0.7);
+  --rgba-rosy-brown-80: rgba(196, 159, 153, 0.8);
+  --rgba-rosy-brown-90: rgba(196, 159, 153, 0.9);
 }
 
 /* Optional: Predefined Themes */
 .light-theme {
   --bg-color: var(--color-light);
   --text-color: var(--color-dark);
+
+  /* CSS HEX */
+
+
+
+
+  /* CSS HSL */
+  --raisin-black: hsla(270, 8%, 15%, 1);
+  --midnight-green: hsla(192, 100%, 21%, 1);
+  --midnight-green-2: hsla(192, 98%, 23%, 1);
+  --taupe-gray: hsla(348, 4%, 50%, 1);
+  --rosy-brown: hsla(8, 27%, 68%, 1);
+
+  /* SCSS HEX */
+  $raisin-black: #27242Aff;
+  $midnight-green: #00556Aff;
+  $midnight-green-2: #015D73ff;
+  $taupe-gray: #857B7Dff;
+  $rosy-brown: #C49F99ff;
+
+  /* SCSS HSL */
+  $raisin-black: hsla(270, 8%, 15%, 1);
+  $midnight-green: hsla(192, 100%, 21%, 1);
+  $midnight-green-2: hsla(192, 98%, 23%, 1);
+  $taupe-gray: hsla(348, 4%, 50%, 1);
+  $rosy-brown: hsla(8, 27%, 68%, 1);
+
+  /* SCSS RGB */
+  $raisin-black: rgba(39, 36, 42, 1);
+  $midnight-green: rgba(0, 85, 106, 1);
+  $midnight-green-2: rgba(1, 93, 115, 1);
+  $taupe-gray: rgba(133, 123, 125, 1);
+  $rosy-brown: rgba(196, 159, 153, 1);
+
+  /* SCSS Gradient */
+  $gradient-top: linear-gradient(0deg, #27242Aff, #00556Aff, #015D73ff, #857B7Dff, #C49F99ff);
+  $gradient-right: linear-gradient(90deg, #27242Aff, #00556Aff, #015D73ff, #857B7Dff, #C49F99ff);
+  $gradient-bottom: linear-gradient(180deg, #27242Aff, #00556Aff, #015D73ff, #857B7Dff, #C49F99ff);
+  $gradient-left: linear-gradient(270deg, #27242Aff, #00556Aff, #015D73ff, #857B7Dff, #C49F99ff);
+  $gradient-top-right: linear-gradient(45deg, #27242Aff, #00556Aff, #015D73ff, #857B7Dff, #C49F99ff);
+  $gradient-bottom-right: linear-gradient(135deg, #27242Aff, #00556Aff, #015D73ff, #857B7Dff, #C49F99ff);
+  $gradient-top-left: linear-gradient(225deg, #27242Aff, #00556Aff, #015D73ff, #857B7Dff, #C49F99ff);
+  $gradient-bottom-left: linear-gradient(315deg, #27242Aff, #00556Aff, #015D73ff, #857B7Dff, #C49F99ff);
+  $gradient-radial: radial-gradient(#27242Aff, #00556Aff, #015D73ff, #857B7Dff, #C49F99ff);
 }
