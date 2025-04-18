@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql } from "@apollo/client";
 
 export const CV_QUERY = gql`
   query CV_QUERY {
@@ -24,9 +24,17 @@ export const CV_QUERY = gql`
         to
       }
       skills {
-      level
-      name
-    }
+        level
+        name
+      }
+      contactLinks {
+        socialMedia {
+          name
+          href
+          icon
+        }
+        email
+      }
     }
   }
 `;
