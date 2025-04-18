@@ -1,0 +1,21 @@
+.contacts-div {
+  margin: 1.5rem auto;
+}
+
+.contact-icon {
+  margin-right: 0.2rem;
+}
+
+@media (max-width: 840px) {
+  .contacts-div {
+    justify-content: center;
+    margin-bottom: 0;
+  }
+  .contact-icon {
+    color: var(--rgba-midnight-green-50);
+
+    &:hover {
+      color: var(--rgba-midnight-green-90);
+    }
+  }
+}

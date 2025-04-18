@@ -7,8 +7,11 @@
   height: 100%;
   background-color: var(--raisin-black);
   color: white;
-  padding: 5rem 1rem;
+  padding: 5rem 1rem 0;
   transition: width 0.3s ease-in-out;
+  justify-content: space-between;
+  display: flex;
+  flex-direction: column;
   box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1); /* <- sidebar shadow */
   z-index: 10;
 }
@@ -69,5 +72,14 @@
 
 /* Hide text when sidebar is collapsed */
 .sidebar.collapsed .nav-link {
+  display: none;
+}
+
+.sidebar-footer {
+  width: fit-content;
+  margin: 0 auto;
+}
+
+.sidebar.collapsed .sidebar-footer {
   display: none;
 }
