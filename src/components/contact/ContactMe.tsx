@@ -34,7 +34,8 @@ export const ContactMe = ({ size = "md" }: ContactMeProps) => {
       const { contactLinks } = data.cv;
       setContacts(contactLinks);
     }
-  });
+  }, [data]);
+
   return (
     <HStack className="contacts-div">
       {contacts?.socialMedia.map((link) => {
@@ -51,14 +52,16 @@ export const ContactMe = ({ size = "md" }: ContactMeProps) => {
           />
         );
       })}
-      <Icon
-        className="contact-icon"
-        boxSize={`calc(${sizeMap[size]} + 0.2em)`}
-        onClick={() => (window.location.href = `mailto:${contacts?.email}`)}
-        cursor="pointer"
-      >
-        <MdEmail />
-      </Icon>
+      {contacts?.email ? (
+        <Icon
+          className="contact-icon"
+          boxSize={`calc(${sizeMap[size]} + 0.2em)`}
+          onClick={() => (window.location.href = `mailto:${contacts?.email}`)}
+          cursor="pointer"
+        >
+          <MdEmail />
+        </Icon>
+      ) : null}
     </HStack>
   );
 };
