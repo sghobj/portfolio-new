@@ -2,9 +2,9 @@ import "./Layout.scss";
 import { ReactNode } from "react";
 import { useSpinner } from "../../context/GeneralContext.tsx";
 import { Spinner } from "../spinner/Spinner.tsx";
-import { Navbar } from "../navbar/Navbar.tsx";
 import { Sidebar } from "../sidebar/Sidebar.tsx";
 import { useScreenSize } from "../../hooks/useScreenSize.ts";
+import { BurgerMenu } from "../navbar/BurgerMenu.tsx";
 
 type LayoutProps = {
   children: ReactNode;
@@ -19,7 +19,7 @@ export const Layout = ({ children }: LayoutProps) => {
     <div className="layout-main-container">
       {!isSmallScreen ? <Sidebar /> : null}
       <div className="main-content">
-        {isSmallScreen ? <Navbar /> : null}
+        {isSmallScreen ? <BurgerMenu /> : null}
         {isLoading ? (
           <Spinner />
         ) : (

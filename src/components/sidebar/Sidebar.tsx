@@ -1,8 +1,9 @@
 import { useCallback, useState } from "react";
 import "./Sidebar.scss";
-import { FaBars, FaHome, FaUser } from "react-icons/fa";
+import { FaBars } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { ContactMe } from "../contact/ContactMe.tsx";
+import { links } from "../constants/general.tsx";
 
 export const Sidebar = () => {
   const [isCollapsed, setIsCollapsed] = useState(true);
@@ -14,19 +15,6 @@ export const Sidebar = () => {
   const handleLinkClick = useCallback(() => {
     setIsCollapsed(true);
   }, [setIsCollapsed]);
-
-  const links = [
-    {
-      label: "Home",
-      icon: <FaHome className="nav-icon" />,
-      href: "/",
-    },
-    {
-      label: "CV",
-      icon: <FaUser className="nav-icon" />,
-      href: "/cv",
-    },
-  ];
 
   return (
     <div
