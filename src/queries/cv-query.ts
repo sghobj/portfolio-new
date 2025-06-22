@@ -3,11 +3,10 @@ import { gql } from "@apollo/client";
 export const CV_QUERY = gql`
   query CV_QUERY {
     cv {
-      name
-      subtitle
       about
       coverImageUrl
       experiences {
+        id
         company
         description
         from
@@ -16,6 +15,7 @@ export const CV_QUERY = gql`
         to
       }
       education {
+        id
         description
         from
         institute
@@ -24,13 +24,30 @@ export const CV_QUERY = gql`
         to
       }
       skills {
+        id
         level
         name
       }
+      languages {
+        id
+        language
+        level
+      }
+      certifications {
+        id
+        name
+        date
+      }
+      publications {
+        id
+        date
+        description
+      }
       contactLinks {
         socialMedia {
-          name
+          id
           href
+          name
           icon
         }
         email
