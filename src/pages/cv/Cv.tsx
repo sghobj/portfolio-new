@@ -7,11 +7,17 @@ import { CV_QUERY } from "../../queries/cv-query.ts";
 import { Education } from "../../components/cv/education/Education.tsx";
 import { Experience } from "../../components/cv/experience/Experience.tsx";
 import { useSpinner } from "../../context/GeneralContext.tsx";
+import { Certificates } from "../../components/cv/certificates/Certificates.tsx";
+import { Languages } from "../../components/cv/languages/Languages.tsx";
+import { Publications } from "../../components/cv/publications/Publications.tsx";
 
 export const Cv = () => {
   const [skills, setSkills] = useState([]);
   const [education, setEducation] = useState([]);
   const [experiences, setExperiences] = useState([]);
+  const [languages, setLanguages] = useState([]);
+  const [publications, setPublications] = useState([]);
+  const [certificates, setCertificates] = useState([]);
   const [about, setAbout] = useState("");
 
   const { setLoading } = useSpinner();
@@ -26,11 +32,22 @@ export const Cv = () => {
 
   useEffect(() => {
     if (data?.cv) {
-      const { skills, education, about, experiences } = data.cv;
+      const {
+        skills,
+        education,
+        about,
+        experiences,
+        certifications,
+        publications,
+        languages,
+      } = data.cv;
       setSkills(skills);
       setEducation(education);
       setExperiences(experiences);
       setAbout(about);
+      setCertificates(certifications);
+      setPublications(publications);
+      setLanguages(languages);
       setLoading(false);
     } else if (error) {
       console.log(error);
@@ -62,6 +79,24 @@ export const Cv = () => {
           <div className={"col-lg cv-section education"}>
             <h1 className={"section-header"}>Education</h1>
             {education ? <Education education={education} /> : null}
+          </div>
+        </div>
+        <div className="row gap-3">
+          <div className={"col-lg cv-section certificates"}>
+            <h1 className={"section-header"}>Certificates</h1>
+            {certificates ? <Certificates certificates={certificates} /> : null}
+          </div>
+        </div>
+        <div className="row gap-3">
+          <div className={"col-lg cv-section publications"}>
+            <h1 className={"section-header"}>Publications</h1>
+            {publications ? <Publications publications={publications} /> : null}
+          </div>
+        </div>
+        <div className="row gap-3">
+          <div className={"col-lg cv-section languages"}>
+            <h1 className={"section-header"}>Languages</h1>
+            {languages ? <Languages languages={languages} /> : null}
           </div>
         </div>
       </div>
