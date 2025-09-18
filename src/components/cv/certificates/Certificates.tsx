@@ -1,13 +1,8 @@
 import { formatDate } from "../../../utils/general.ts";
-
-type CertificateType = {
-  id: string;
-  name: string;
-  date: string;
-};
+import { ComponentCvCertificates } from "../../../generated/graphql.ts";
 
 type CertificatesProps = {
-  certificates: CertificateType[];
+  certificates: ComponentCvCertificates[];
 };
 
 export const Certificates = ({ certificates }: CertificatesProps) => {

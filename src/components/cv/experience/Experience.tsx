@@ -1,18 +1,9 @@
 import "./Experience.scss";
 import { formatDate } from "../../../utils/general.ts";
-
-export type ExperienceType = {
-  id: string;
-  from: string;
-  to?: string;
-  company: string;
-  location: string;
-  position: string;
-  description?: string;
-};
+import { ComponentCvExperience } from "../../../generated/graphql.ts";
 
 type ExperienceProps = {
-  experiences: ExperienceType[];
+  experiences: ComponentCvExperience[];
 };
 
 export const Experience = ({ experiences }: ExperienceProps) => {

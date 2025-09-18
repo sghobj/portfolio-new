@@ -1,13 +1,9 @@
 import "./Skills.scss";
 import { Rating } from "../../rating/Rating.tsx";
-
-export type SkillType = {
-  name: string;
-  level: number;
-};
+import { ComponentCvSkill } from "../../../generated/graphql.ts";
 
 type SkillsProps = {
-  skills: SkillType[];
+  skills: ComponentCvSkill[];
 };
 
 export const Skills = ({ skills }: SkillsProps) => {
@@ -19,7 +15,7 @@ export const Skills = ({ skills }: SkillsProps) => {
             return (
               <div key={index} className="skill-col col-6">
                 <h3 className="skill-name">{skill.name}</h3>
-                <Rating level={skill.level} />
+                <Rating level={skill.level ?? 0} />
                 {/*<div className="progress" role="progressbar" aria-label="Skill level"*/}
                 {/*     aria-valuenow={skill.level}*/}
                 {/*     aria-valuemin={0} aria-valuemax={100} style={{height: "2px"}}>*/}
