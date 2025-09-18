@@ -1,13 +1,8 @@
 import { formatDate } from "../../../utils/general.ts";
-
-type PublicationType = {
-  id: string;
-  description: string;
-  date: string;
-};
+import { ComponentCvPublication } from "../../../generated/graphql.ts";
 
 type CertificatesProps = {
-  publications: PublicationType[];
+  publications: ComponentCvPublication[];
 };
 
 export const Publications = ({ publications }: CertificatesProps) => {

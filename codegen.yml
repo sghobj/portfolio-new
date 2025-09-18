@@ -1,0 +1,16 @@
+schema:
+  - "http://localhost:1337/graphql"
+
+# Only scan query files instead of all src
+documents: "src/queries/**/*.ts"
+
+generates:
+  src/generated/graphql.ts:
+    plugins:
+      - "typescript"
+      - "typescript-operations"
+      - "typescript-react-apollo"
+    config:
+      withHooks: true
+      withHOC: false
+      withComponent: false
