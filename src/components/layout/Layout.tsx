@@ -1,10 +1,10 @@
 import "./Layout.scss";
 import { ReactNode } from "react";
-import { useSpinner } from "../../context/GeneralContext.tsx";
 import { Spinner } from "../spinner/Spinner.tsx";
 import { Sidebar } from "../sidebar/Sidebar.tsx";
 import { useScreenSize } from "../../hooks/useScreenSize.ts";
 import { BurgerMenu } from "../navbar/BurgerMenu.tsx";
+import { useSpinner } from "../../hooks/useSpinner.ts";
 
 type LayoutProps = {
   children: ReactNode;

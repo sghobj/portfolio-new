@@ -11,4 +11,9 @@ export const links = [
     icon: <FaUser className="nav-icon" />,
     href: "/cv",
   },
+  {
+    label: "Showcase",
+    icon: <FaUser className="nav-icon" />,
+    href: "/travel/showcase",
+  },
 ];

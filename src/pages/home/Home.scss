@@ -74,7 +74,7 @@
 
   .landing-title {
     font-size: 4rem;
-    color: var(--color-dark-blue)
+    color: var(--color-dark-blue);
   }
 
   .landing-text-div {
@@ -89,7 +89,6 @@
 
 /* Very Small Screens */
 @media (max-width: 410px) {
-
   .landing-title {
     font-size: 3rem;
   }
