@@ -4,6 +4,8 @@ export const CV_QUERY = gql`
   query CV_QUERY {
     cv {
       about
+      name
+      subtitle
       coverImageUrl
       experiences {
         id

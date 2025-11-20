@@ -1,0 +1,32 @@
+name: Frontend CI
+
+# Trigger on any push to any branch, or on PRs targeting any branch
+on:
+  pull_request:
+    branches: ["**"]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    env:
+      VITE_STRAPI_BASE_URL: ${{ secrets.VITE_STRAPI_BASE_URL }}
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - run: npm run lint
+
+      - run: npm run format:check
+
+      - name: Run tests
+        run: npm test
+
+      - run: npm run build

@@ -6,7 +6,6 @@ import "./Cv.scss";
 import { CV_QUERY } from "../../queries/cv-query.ts";
 import { Education } from "../../components/cv/education/Education.tsx";
 import { Experience } from "../../components/cv/experience/Experience.tsx";
-import { useSpinner } from "../../context/GeneralContext.tsx";
 import { Certificates } from "../../components/cv/certificates/Certificates.tsx";
 import { Languages } from "../../components/cv/languages/Languages.tsx";
 import { Publications } from "../../components/cv/publications/Publications.tsx";
@@ -19,6 +18,7 @@ import {
   ComponentCvPublication,
   ComponentCvSkill,
 } from "../../generated/graphql.ts";
+import { useSpinner } from "../../hooks/useSpinner.ts";
 
 type CV_Type = {
   skills?: ComponentCvSkill[];
