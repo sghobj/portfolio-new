@@ -3,7 +3,7 @@ import "./Sidebar.scss";
 import { FaBars } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { ContactMe } from "../contact/ContactMe.tsx";
-import { links } from "../constants/general.tsx";
+import { links } from "../../constants/general.tsx";
 
 export const Sidebar = () => {
   const [isCollapsed, setIsCollapsed] = useState(true);
@@ -33,6 +33,7 @@ export const Sidebar = () => {
                   to={link.href}
                   className="nav-link"
                   onClick={handleLinkClick}
+                  data-testid={link.testId}
                 >
                   {link.icon}
                   {!isCollapsed && <span>{link.label}</span>}

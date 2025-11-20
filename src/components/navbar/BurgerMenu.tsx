@@ -9,7 +9,7 @@ import {
 } from "@chakra-ui/react";
 import { RxHamburgerMenu } from "react-icons/rx";
 import "./BurgerMenu.scss";
-import { links } from "../constants/general.tsx";
+import { links } from "../../constants/general.tsx";
 import { Link } from "react-router-dom";
 import { ContactMe } from "../contact/ContactMe.tsx";
 
@@ -43,7 +43,11 @@ export const BurgerMenu = () => {
                           return (
                             <>
                               <HStack className="nav-item" key={link.label}>
-                                <Link to={link.href} className="nav-link">
+                                <Link
+                                  to={link.href}
+                                  className="nav-link"
+                                  data-testid={link.testId}
+                                >
                                   {link.icon}
                                   <span>{link.label}</span>
                                 </Link>
