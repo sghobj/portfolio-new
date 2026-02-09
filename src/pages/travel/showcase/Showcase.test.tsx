@@ -4,6 +4,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { Provider } from "../../../components/ui/provider.tsx";
 import { MockedProvider } from "@apollo/client/testing";
 import { PHOTOS_QUERY } from "../../../queries/photos.ts";
+import { GeneralProvider } from "../../../context/GeneralContext.tsx";
 
 // Mock framer-motion
 vi.mock("framer-motion", () => {
@@ -48,7 +49,9 @@ const mocks = [
 const renderWithProviders = (ui: React.ReactElement) => {
   return render(
     <MockedProvider mocks={mocks}>
-      <Provider>{ui}</Provider>
+      <GeneralProvider>
+        <Provider>{ui}</Provider>
+      </GeneralProvider>
     </MockedProvider>,
   );
 };

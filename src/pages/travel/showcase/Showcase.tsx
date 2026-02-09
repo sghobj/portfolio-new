@@ -1,6 +1,7 @@
 import { PhotoGallery } from "../../../components/gallery/PhotoGallery.tsx";
 import { usePhotos } from "../../../queries/photos.ts";
-import { Spinner } from "../../../components/spinner/Spinner.tsx";
+import { useSpinner } from "../../../hooks/useSpinner.ts";
+import { useEffect } from "react";
 import { Box, Container, Heading, Text, VStack } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 
@@ -8,15 +9,29 @@ const MotionBox = motion(Box);
 const MotionVStack = motion(VStack);
 
 export const Showcase = () => {
+  const { setLoading } = useSpinner();
   const { photos, loading, error } = usePhotos("travel-showcase");
 
-  if (loading) return <Spinner />;
+  useEffect(() => {
+    setLoading(loading);
+  }, [loading, setLoading]);
+
   if (error)
     return (
       <Box p={10} textAlign="center">
         <Text color="red.500">Error loading photos: {error.message}</Text>
       </Box>
     );
+
+  if (!photos && !loading) {
+    return (
+      <Box p={10} textAlign="center">
+        <Text>No photos found.</Text>
+      </Box>
+    );
+  }
+
+  if (loading && !photos.length) return null;
 
   // Map GraphQL photos to react-photo-album format
   const albumPhotos = photos

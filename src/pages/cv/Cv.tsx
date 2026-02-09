@@ -29,11 +29,12 @@ const MotionBox = motion(Box);
 
 export const Cv = () => {
   const { setLoading } = useSpinner();
-  const { loading, data, error } = useQuery<Cv_QueryQuery>(CV_QUERY);
+  const { loading, data, error } = useQuery<Cv_QueryQuery>(CV_QUERY, {
+    notifyOnNetworkStatusChange: true,
+  });
 
   useEffect(() => {
     setLoading(loading);
-    return () => setLoading(false);
   }, [loading, setLoading]);
 
   if (error) {

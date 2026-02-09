@@ -4,6 +4,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { Provider } from "../../components/ui/provider.tsx";
 import { MockedProvider } from "@apollo/client/testing";
 import { HOME_QUERY } from "../../queries/home-query.ts";
+import { GeneralProvider } from "../../context/GeneralContext.tsx";
 import { BrowserRouter } from "react-router-dom";
 import { ComponentType, ReactElement, ReactNode } from "react";
 
@@ -85,7 +86,9 @@ const renderWithProviders = (ui: ReactElement) => {
   return render(
     <MockedProvider mocks={mocks}>
       <BrowserRouter>
-        <Provider>{ui}</Provider>
+        <GeneralProvider>
+          <Provider>{ui}</Provider>
+        </GeneralProvider>
       </BrowserRouter>
     </MockedProvider>,
   );
