@@ -1,6 +1,5 @@
 import "./Home.scss";
 import { useQuery } from "@apollo/client";
-import { Spinner } from "../../components/spinner/Spinner.tsx";
 import { motion } from "framer-motion";
 import {
   Box,
@@ -20,6 +19,8 @@ import * as SiIcons from "react-icons/si";
 import { IconType } from "react-icons";
 import { HOME_QUERY } from "../../queries/home-query.ts";
 import { HomepageQuery } from "../../generated/graphql.ts";
+import { useSpinner } from "../../hooks/useSpinner.ts";
+import { useEffect } from "react";
 
 const MotionBox = motion(Box);
 const MotionVStack = motion(VStack);
@@ -31,16 +32,31 @@ const getIcon = (iconName: string): IconType | null => {
 };
 
 export const Home = () => {
-  const { loading, data } = useQuery<HomepageQuery>(HOME_QUERY);
+  const { setLoading } = useSpinner();
+  const { loading, data } = useQuery<HomepageQuery>(HOME_QUERY, {
+    notifyOnNetworkStatusChange: true,
+  });
+
+  useEffect(() => {
+    setLoading(loading);
+  }, [loading, setLoading]);
 
   const fadeIn = {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
   };
 
-  if (loading) return <Spinner />;
-
   const homepage = data?.homepage;
+
+  if (!homepage && !loading) {
+    return (
+      <Box p={8} textAlign="center">
+        <Text>No homepage data found.</Text>
+      </Box>
+    );
+  }
+
+  if (!homepage) return null;
 
   return (
     <Box className="home-page" bg="var(--color-bg-primary)">

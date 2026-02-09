@@ -20,11 +20,8 @@ export const Layout = ({ children }: LayoutProps) => {
       {!isSmallScreen && <Sidebar />}
       <div className={`main-content ${!isSmallScreen ? "with-sidebar" : ""}`}>
         {isSmallScreen && <BurgerMenu />}
-        {isLoading ? (
-          <Spinner />
-        ) : (
-          <div className="content-container">{children}</div>
-        )}
+        {isLoading && <Spinner />}
+        <div className="content-container">{children}</div>
       </div>
     </div>
   );

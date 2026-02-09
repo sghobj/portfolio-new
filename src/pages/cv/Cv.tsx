@@ -7,10 +7,18 @@ import {
   ComponentCvEducation,
   ComponentCvExperience,
   Cv_QueryQuery,
-  Skill
+  Skill,
 } from "../../generated/graphql.ts";
 import { useSpinner } from "../../hooks/useSpinner.ts";
-import { Box, Grid, Heading, Separator, SimpleGrid, Text, VStack } from "@chakra-ui/react";
+import {
+  Box,
+  Grid,
+  Heading,
+  Separator,
+  SimpleGrid,
+  Text,
+  VStack,
+} from "@chakra-ui/react";
 import { Experience } from "../../components/cv/experience/Experience.tsx";
 import { Education } from "../../components/cv/education/Education.tsx";
 import { Skills } from "../../components/cv/skills/Skills.tsx";
@@ -21,11 +29,12 @@ const MotionBox = motion(Box);
 
 export const Cv = () => {
   const { setLoading } = useSpinner();
-  const { loading, data, error } = useQuery<Cv_QueryQuery>(CV_QUERY);
+  const { loading, data, error } = useQuery<Cv_QueryQuery>(CV_QUERY, {
+    notifyOnNetworkStatusChange: true,
+  });
 
   useEffect(() => {
     setLoading(loading);
-    return () => setLoading(false);
   }, [loading, setLoading]);
 
   if (error) {

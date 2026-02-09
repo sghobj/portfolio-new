@@ -30,7 +30,10 @@ export const PHOTOS_QUERY = gql`
 export const usePhotos = (folder: string = "travel-showcase") => {
   const { data, loading, error } = useQuery<PhotosQueryData, PhotosQueryVars>(
     PHOTOS_QUERY,
-    { variables: { folder } },
+    {
+      variables: { folder },
+      notifyOnNetworkStatusChange: true,
+    },
   );
 
   return {
