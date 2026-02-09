@@ -10,7 +10,6 @@ import { GeneralProvider } from "../../context/GeneralContext.tsx";
 // Mock framer-motion
 vi.mock("framer-motion", () => {
   const motion = (component: React.ComponentType<unknown>) => component;
-  // @ts-ignore
   motion.div = ({
     children,
     ...props
@@ -18,7 +17,6 @@ vi.mock("framer-motion", () => {
     children: React.ReactNode;
     [key: string]: unknown;
   }) => <div {...props}>{children}</div>;
-  // @ts-ignore
   motion.custom = (component: React.ComponentType<unknown>) => component;
 
   return {
@@ -60,12 +58,11 @@ const mockCvData = {
     ],
     skills: [
       {
-        __typename: "ComponentCvSkill",
-        id: "1",
+        __typename: "Skill",
+        documentId: "1",
         name: "React",
         iconName: "FaReact",
         iconColor: "#61DAFB",
-        level: 5,
       },
     ],
     languages: [],
@@ -189,7 +186,7 @@ describe("Cv Page", () => {
       },
     ];
 
-    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+    const spy = vi.spyOn(console, "error").mockImplementation(() => {});
 
     render(
       <MockedProvider mocks={errorMocks}>

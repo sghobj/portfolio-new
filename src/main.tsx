@@ -5,7 +5,7 @@ import { App } from "./App.tsx";
 import { ApolloProvider } from "@apollo/client";
 
 // Import our custom CSS
-import "../src/scss/styles.scss";
+import "./scss/styles.scss";
 import { BrowserRouter } from "react-router-dom";
 import { client } from "./utils/apollo.ts";
 import { GeneralProvider } from "./context/GeneralContext.tsx";

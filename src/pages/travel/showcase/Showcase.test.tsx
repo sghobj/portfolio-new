@@ -8,7 +8,6 @@ import { PHOTOS_QUERY } from "../../../queries/photos.ts";
 // Mock framer-motion
 vi.mock("framer-motion", () => {
   const motion = (component: React.ComponentType<unknown>) => component;
-  // @ts-ignore
   motion.div = ({
     children,
     ...props
@@ -16,7 +15,6 @@ vi.mock("framer-motion", () => {
     children: React.ReactNode;
     [key: string]: unknown;
   }) => <div {...props}>{children}</div>;
-  // @ts-ignore
   motion.custom = (component: React.ComponentType<unknown>) => component;
 
   return {
