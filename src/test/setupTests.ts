@@ -2,7 +2,7 @@ import "@testing-library/jest-dom";
 import { vi } from "vitest";
 
 const shouldIgnore = (args: unknown[]) => {
-  const first = args[0] as { message?: string } | string | undefined;
+  const first = args[0] as any;
 
   const msg =
     typeof first === "string"

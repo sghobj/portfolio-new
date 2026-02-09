@@ -1,11 +1,12 @@
 import { render, screen } from "@testing-library/react";
 import { Skills } from "./Skills";
 import { describe, expect, it, vi } from "vitest";
-import { Skill } from "../../../generated/graphql.ts";
+import { ComponentCvSkill } from "../../../generated/graphql.ts";
 import { Provider } from "../../ui/provider.tsx";
 import { ComponentType, ReactElement, ReactNode } from "react";
 
 // Mock framer-motion to avoid animation issues in tests
+// @ts-ignore
 vi.mock("framer-motion", () => {
   const motion = (component: ComponentType<unknown>) => component;
   motion.div = ({
@@ -33,15 +34,10 @@ describe("Skills Component", () => {
   });
 
   it("renders a list of skills correctly", () => {
-    const mockSkills: Skill[] = [
+    const mockSkills: ComponentCvSkill[] = [
+      { id: "1", name: "React", iconName: "FaReact", iconColor: "#61DAFB" },
       {
-        documentId: "1",
-        name: "React",
-        iconName: "FaReact",
-        iconColor: "#61DAFB",
-      },
-      {
-        documentId: "2",
+        id: "2",
         name: "TypeScript",
         iconName: "SiTypescript",
         iconColor: "#3178C6",
@@ -55,13 +51,8 @@ describe("Skills Component", () => {
   });
 
   it("handles missing iconName gracefully", () => {
-    const mockSkills: Skill[] = [
-      {
-        documentId: "1",
-        name: "Unknown Skill",
-        iconName: "",
-        iconColor: "#FFFFFF",
-      },
+    const mockSkills: ComponentCvSkill[] = [
+      { id: "1", name: "Unknown Skill", iconName: "", iconColor: "#FFFFFF" },
     ];
 
     renderWithChakra(<Skills skills={mockSkills} />);
@@ -69,13 +60,8 @@ describe("Skills Component", () => {
   });
 
   it("uses default icon color when iconColor is missing", () => {
-    const mockSkills: Skill[] = [
-      {
-        documentId: "1",
-        name: "React",
-        iconName: "FaReact",
-        iconColor: "",
-      },
+    const mockSkills: ComponentCvSkill[] = [
+      { id: "1", name: "React", iconName: "FaReact", iconColor: "" },
     ];
 
     renderWithChakra(<Skills skills={mockSkills} />);
