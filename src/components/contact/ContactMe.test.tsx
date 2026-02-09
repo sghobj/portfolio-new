@@ -39,9 +39,9 @@ const renderWithProviders = (ui: React.ReactElement) => {
 describe("ContactMe Component", () => {
   beforeEach(() => {
     vi.spyOn(window, "open").mockImplementation(() => null);
-    // @ts-ignore
+    // @ts-expect-error - window.location is read-only in some environments
     delete window.location;
-    // @ts-ignore
+    // @ts-expect-error - window.location is read-only in some environments
     window.location = { href: "" };
 
     // matchMedia is already mocked in setupTests.ts, but if some tests interfere with global window
@@ -87,9 +87,9 @@ describe("ContactMe Component", () => {
   it("handles email icon click", async () => {
     // Redefine location for this test specifically
     const mockLocation = { href: "" };
-    // @ts-ignore
+    // @ts-expect-error - window.location is read-only
     delete window.location;
-    // @ts-ignore
+    // @ts-expect-error - window.location is read-only
     window.location = mockLocation;
 
     renderWithProviders(<ContactMe />);

@@ -60,7 +60,7 @@ export const Home = () => {
               gap={4}
               textAlign={{ base: "center", md: "left" }}
             >
-              {homepage?.welcomeText ?? (
+              {homepage?.welcomeText && (
                 <Text
                   color="var(--color-accent)"
                   fontWeight="bold"
@@ -71,7 +71,7 @@ export const Home = () => {
                   {homepage?.welcomeText}
                 </Text>
               )}
-              {homepage?.heroTitle ?? (
+              {homepage?.heroTitle && (
                 <Heading
                   as="h1"
                   size="4xl"
@@ -83,7 +83,7 @@ export const Home = () => {
                 </Heading>
               )}
 
-              {homepage?.heroSubtitle ?? (
+              {homepage?.heroSubtitle && (
                 <Text
                   fontSize="xl"
                   color="var(--color-text-secondary)"
@@ -114,27 +114,23 @@ export const Home = () => {
                   View My CV <FaArrowRight style={{ marginLeft: "8px" }} />
                 </Link>
               </Button>
-              {homepage?.githubLink ?? (
-                <Button
-                  asChild
-                  size="xl"
-                  variant="outline"
-                  className="btn-outline"
-                  borderRadius="full"
-                  px={8}
-                  width={{ base: "full", sm: "auto" }}
+              <Button
+                asChild
+                size="xl"
+                variant="outline"
+                className="btn-outline"
+                borderRadius="full"
+                px={8}
+                width={{ base: "full", sm: "auto" }}
+              >
+                <a
+                  href={homepage?.githubLink || "https://github.com/sarahghobj"}
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
-                  <a
-                    href={
-                      homepage?.githubLink || "https://github.com/sarahghobj"
-                    }
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <FaGithub style={{ marginRight: "8px" }} /> GitHub
-                  </a>
-                </Button>
-              )}
+                  <FaGithub style={{ marginRight: "8px" }} /> GitHub
+                </a>
+              </Button>
             </HStack>
           </MotionVStack>
         </Container>
