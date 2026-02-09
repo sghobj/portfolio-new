@@ -140,7 +140,7 @@ export const Home = () => {
                 width={{ base: "full", sm: "auto" }}
               >
                 <a
-                  href={homepage?.githubLink || "https://github.com/sarahghobj"}
+                  href={homepage?.githubLink || "https://github.com/sghobj"}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
