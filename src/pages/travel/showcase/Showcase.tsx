@@ -2,11 +2,29 @@ import { PhotoGallery } from "../../../components/gallery/PhotoGallery.tsx";
 import { usePhotos } from "../../../queries/photos.ts";
 import { useSpinner } from "../../../hooks/useSpinner.ts";
 import { useEffect } from "react";
-import { Box, Container, Heading, Text, VStack } from "@chakra-ui/react";
-import { motion } from "framer-motion";
+import {
+  Box,
+  Container,
+  Heading,
+  HStack,
+  Link,
+  Text,
+  VStack,
+} from "@chakra-ui/react";
+import { motion, Variants } from "framer-motion";
+import { FaInstagram } from "react-icons/fa";
 
 const MotionBox = motion(Box);
 const MotionVStack = motion(VStack);
+
+const fadeIn: Variants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.8, ease: "easeOut" },
+  },
+};
 
 export const Showcase = () => {
   const { setLoading } = useSpinner();
@@ -54,9 +72,9 @@ export const Showcase = () => {
           gap={8}
           mb={{ base: 12, md: 16 }}
           textAlign="center"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
+          initial="hidden"
+          animate="visible"
+          variants={fadeIn}
         >
           <Box
             bg="rgba(139, 92, 246, 0.1)"
@@ -96,12 +114,50 @@ export const Showcase = () => {
             creative outlet that allows me to share the beauty of the world from
             my perspective.
           </Text>
+
+          <Link
+            href="https://instagram.com/sarah_ghobj"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ textDecoration: "none" }}
+          >
+            <HStack
+              gap={3}
+              bg="rgba(139, 92, 246, 0.1)"
+              px={6}
+              py={3}
+              position="relative"
+              overflow="hidden"
+            >
+              <Box
+                p={2}
+                borderRadius="full"
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+                color="white"
+                boxShadow="0 0 15px rgba(139, 92, 246, 0.4)"
+              >
+                <FaInstagram size="1.2em" />
+              </Box>
+              <Text
+                fontWeight="500"
+                fontSize="md"
+                letterSpacing="tight"
+                color="var(--color-violet)"
+                m={"auto"}
+              >
+                sarah_ghobj
+              </Text>
+            </HStack>
+          </Link>
         </MotionVStack>
 
         <MotionBox
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 0.4 }}
+          initial="hidden"
+          animate="visible"
+          variants={fadeIn}
+          transition={{ delay: 0.4 }}
         >
           <PhotoGallery photos={albumPhotos} />
         </MotionBox>

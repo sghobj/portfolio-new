@@ -8,20 +8,59 @@ import { BrowserRouter } from "react-router-dom";
 import { GeneralProvider } from "../../context/GeneralContext.tsx";
 
 // Mock framer-motion
-vi.mock("framer-motion", () => {
-  const motion = (component: React.ComponentType<unknown>) => component;
-  motion.div = ({
-    children,
-    ...props
-  }: {
-    children: React.ReactNode;
-    [key: string]: unknown;
-  }) => <div {...props}>{children}</div>;
-  motion.custom = (component: React.ComponentType<unknown>) => component;
+vi.mock("framer-motion", async (importOriginal) => {
+  const actual = (await importOriginal()) as object;
+  const React = await import("react");
+
+  const motionMock = (component: React.ElementType) => {
+    return React.forwardRef<HTMLElement, Record<string, unknown>>(
+      (props, ref) => {
+        const {
+          whileInView,
+          onViewportEnter,
+          viewport,
+          initial,
+          animate,
+          variants,
+          transition,
+          ...rest
+        } = props;
+
+        // Use a dummy data attribute to consume the motion-specific props if needed,
+        // but here we just omit them from the rendered element to avoid warnings.
+        // We also don't need to name them with underscore if we don't destructure them
+        // OR we can just use them in a way that the linter is happy.
+        // Actually, if we don't destructure them, they will be passed to 'rest'
+        // and potentially cause React warnings on the DOM element.
+        // To satisfy no-unused-vars, we can just not destructure them if we don't mind the warnings,
+        // or destructure and not use them (but that's what's failing now).
+
+        // Best way to satisfy both: destructure and then ignore them.
+        void whileInView;
+        void onViewportEnter;
+        void viewport;
+        void initial;
+        void animate;
+        void variants;
+        void transition;
+
+        return React.createElement(component as string, { ...rest, ref });
+      },
+    );
+  };
+
+  const motionProxy = new Proxy(motionMock, {
+    get: (target, prop) => {
+      if (typeof prop === "string" && prop !== "forwardRef") {
+        return motionMock(prop as React.ElementType);
+      }
+      return Reflect.get(target, prop);
+    },
+  });
 
   return {
-    motion,
-    AnimatePresence: ({ children }: { children: React.ReactNode }) => children,
+    ...actual,
+    motion: motionProxy,
   };
 });
 
@@ -66,11 +105,29 @@ const mockCvData = {
       },
     ],
     languages: [],
-    certifications: [],
+    certifications: [
+      {
+        __typename: "ComponentCvCertificates",
+        id: "cert-1",
+        name: "React Certification",
+        instituition: "Meta",
+        date: "2021-01-01",
+        certificateLink: "https://example.com/cert",
+        image: null,
+      },
+    ],
     publications: [],
     contactLinks: {
       __typename: "ComponentSharedContact",
-      socialMedia: [],
+      socialMedia: [
+        {
+          __typename: "ComponentSharedSocialMedia",
+          id: "social-1",
+          name: "LinkedIn",
+          href: "https://linkedin.com/in/sarah",
+          icon: "FaLinkedin",
+        },
+      ],
       email: "sarah@example.com",
     },
   },

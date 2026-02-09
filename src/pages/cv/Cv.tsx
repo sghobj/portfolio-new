@@ -1,15 +1,4 @@
-import { useEffect } from "react";
-import { useQuery } from "@apollo/client";
 import "./Cv.scss";
-import { CV_QUERY } from "../../queries/cv-query.ts";
-import {
-  ComponentCvCertificates,
-  ComponentCvEducation,
-  ComponentCvExperience,
-  Cv_QueryQuery,
-  Skill,
-} from "../../generated/graphql.ts";
-import { useSpinner } from "../../hooks/useSpinner.ts";
 import {
   Box,
   Grid,
@@ -22,13 +11,39 @@ import {
 import { Experience } from "../../components/cv/experience/Experience.tsx";
 import { Education } from "../../components/cv/education/Education.tsx";
 import { Skills } from "../../components/cv/skills/Skills.tsx";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import { Certificates } from "../../components/cv/certificates/Certificates.tsx";
+import { Link } from "react-router-dom";
+import { useSpinner } from "../../hooks/useSpinner.ts";
+import { useEffect, useState } from "react";
+import { useQuery } from "@apollo/client";
+import { CV_QUERY } from "../../queries/cv-query.ts";
+import {
+  ComponentCvCertificates,
+  ComponentCvEducation,
+  ComponentCvExperience,
+  Cv_QueryQuery,
+  Skill,
+} from "../../generated/graphql.ts";
 
 const MotionBox = motion(Box);
 
+const fadeIn: Variants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: "easeOut" },
+  },
+};
+
 export const Cv = () => {
   const { setLoading } = useSpinner();
+  const [heroAnimated, setHeroAnimated] = useState(false);
+  const [experienceAnimated, setExperienceAnimated] = useState(false);
+  const [educationAnimated, setEducationAnimated] = useState(false);
+  const [skillsAnimated, setSkillsAnimated] = useState(false);
+  const [certificationsAnimated, setCertificationsAnimated] = useState(false);
   const { loading, data, error } = useQuery<Cv_QueryQuery>(CV_QUERY, {
     notifyOnNetworkStatusChange: true,
   });
@@ -60,19 +75,14 @@ export const Cv = () => {
   const skills = cv.skills?.filter((i): i is Skill => !!i) || [];
   const certifications =
     cv.certifications?.filter((i): i is ComponentCvCertificates => !!i) || [];
-
-  const fadeIn = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
-  };
-
   return (
     <Box className="cv-page-container" bg="var(--color-bg-secondary)">
       <MotionBox
         className="cv-hero-section"
-        initial="hidden"
+        initial={heroAnimated ? "visible" : "hidden"}
         whileInView="visible"
-        viewport={{ once: true }}
+        onViewportEnter={() => setHeroAnimated(true)}
+        viewport={{ once: true, amount: 0.1 }}
         variants={fadeIn}
         bg="var(--color-bg-tertiary)"
         position="relative"
@@ -170,23 +180,12 @@ export const Cv = () => {
                 >
                   LinkedIn
                 </Text>
-                <Text color="var(--color-text-secondary)" fontSize="sm">
-                  linkedin.com/in/sarahghobj
-                </Text>
-              </Box>
-              <Box>
-                <Text
-                  fontWeight="bold"
-                  color="var(--color-text-primary)"
-                  fontSize="xs"
-                  textTransform="uppercase"
-                  mb={1}
+                <Link
+                  color="var(--color-text-secondary)"
+                  to={"linkedin.com/in/sarahghobj"}
                 >
-                  GitHub
-                </Text>
-                <Text color="var(--color-text-secondary)" fontSize="sm">
-                  github.com/sghobj
-                </Text>
+                  linkedin.com/in/sarahghobj
+                </Link>
               </Box>
             </SimpleGrid>
           </VStack>
@@ -210,12 +209,13 @@ export const Cv = () => {
         >
           <VStack gap={{ base: 12, md: 16 }} align="stretch">
             <MotionBox
-              initial="hidden"
+              initial={experienceAnimated ? "visible" : "hidden"}
               whileInView="visible"
-              viewport={{ once: true }}
+              onViewportEnter={() => setExperienceAnimated(true)}
+              viewport={{ once: true, amount: 0.1 }}
               variants={fadeIn}
               className="skill-card"
-              p={{ base: 6, md: 8 }}
+              p={{ base: 6, md: 6 }}
             >
               <Heading
                 as="h2"
@@ -232,12 +232,13 @@ export const Cv = () => {
             </MotionBox>
 
             <MotionBox
-              initial="hidden"
+              initial={educationAnimated ? "visible" : "hidden"}
               whileInView="visible"
-              viewport={{ once: true }}
+              onViewportEnter={() => setEducationAnimated(true)}
+              viewport={{ once: true, amount: 0.1 }}
               variants={fadeIn}
               className="skill-card"
-              p={{ base: 6, md: 8 }}
+              p={{ base: 6, md: 6 }}
             >
               <Heading
                 as="h2"
@@ -254,12 +255,13 @@ export const Cv = () => {
 
           <VStack gap={{ base: 12, md: 16 }} align="stretch">
             <MotionBox
-              initial="hidden"
+              initial={skillsAnimated ? "visible" : "hidden"}
               whileInView="visible"
-              viewport={{ once: true }}
+              onViewportEnter={() => setSkillsAnimated(true)}
+              viewport={{ once: true, amount: 0.1 }}
               variants={fadeIn}
               className="skill-card"
-              p={{ base: 6, md: 8 }}
+              p={{ base: 6, md: 6 }}
             >
               <Heading
                 as="h2"
@@ -274,12 +276,13 @@ export const Cv = () => {
             </MotionBox>
 
             <MotionBox
-              initial="hidden"
+              initial={certificationsAnimated ? "visible" : "hidden"}
               whileInView="visible"
-              viewport={{ once: true }}
+              onViewportEnter={() => setCertificationsAnimated(true)}
+              viewport={{ once: true, amount: 0.1 }}
               variants={fadeIn}
               className="skill-card"
-              p={{ base: 6, md: 8 }}
+              p={{ base: 6, md: 6 }}
             >
               <Heading
                 as="h2"

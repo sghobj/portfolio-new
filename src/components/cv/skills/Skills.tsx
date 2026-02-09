@@ -1,13 +1,14 @@
 import { Skill } from "../../../generated/graphql.ts";
 import { Box, SimpleGrid, Text, VStack } from "@chakra-ui/react";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import * as FaIcons from "react-icons/fa6";
 import * as SiIcons from "react-icons/si";
 import { IconType } from "react-icons";
+import { useState } from "react";
 
 const MotionVStack = motion(VStack);
 
-const itemVariants = {
+const itemVariants: Variants = {
   hidden: { opacity: 0, scale: 0.8 },
   visible: (i: number) => ({
     opacity: 1,
@@ -15,7 +16,7 @@ const itemVariants = {
     transition: {
       delay: i * 0.05,
       duration: 0.4,
-      ease: "easeOut" as const,
+      ease: "easeOut",
     },
   }),
 };
@@ -31,6 +32,7 @@ const getIcon = (iconName: string): IconType | null => {
 };
 
 export const Skills = ({ skills }: SkillsProps) => {
+  const [hasAnimated, setHasAnimated] = useState(false);
   if (!skills || skills.length === 0) {
     return (
       <Box textAlign="center" color="var(--color-text-secondary)">
@@ -53,6 +55,10 @@ export const Skills = ({ skills }: SkillsProps) => {
               align="center"
               custom={index}
               variants={itemVariants}
+              initial={hasAnimated ? "visible" : "hidden"}
+              whileInView="visible"
+              onViewportEnter={() => setHasAnimated(true)}
+              viewport={{ once: true, amount: 0.1 }}
             >
               <Box fontSize="3xl" color={iconColor}>
                 {DynamicIcon && <DynamicIcon />}

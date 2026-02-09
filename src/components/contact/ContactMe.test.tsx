@@ -72,10 +72,9 @@ describe("ContactMe Component", () => {
 
     // Need to wait for the query to resolve and state to update
     const linkedInIcon = await screen.findByLabelText("LinkedIn");
-    const instagramIcon = await screen.findByLabelText("Instagram");
 
     expect(linkedInIcon).toBeInTheDocument();
-    expect(instagramIcon).toBeInTheDocument();
+    expect(screen.queryByLabelText("Instagram")).not.toBeInTheDocument();
 
     fireEvent.click(linkedInIcon);
     expect(window.open).toHaveBeenCalledWith(

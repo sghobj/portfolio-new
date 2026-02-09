@@ -44,24 +44,26 @@ export const ContactMe = ({
 
   return (
     <Container className="contacts-div">
-      {contacts?.socialMedia.map((link) => {
-        const nameLower = link.name.toLowerCase();
-        const IconComponent = iconMap[nameLower];
+      {contacts?.socialMedia
+        .filter((link) => link.name.toLowerCase() !== "instagram")
+        .map((link) => {
+          const nameLower = link.name.toLowerCase();
+          const IconComponent = iconMap[nameLower];
 
-        const iconElement = (
-          <Icon
-            as={IconComponent}
-            key={link.href}
-            boxSize={sizeMap[size]}
-            onClick={() => window.open(link.href, "_blank")}
-            cursor="pointer"
-            aria-label={link.name}
-            className="contact-icon"
-          />
-        );
+          const iconElement = (
+            <Icon
+              as={IconComponent}
+              key={link.href}
+              boxSize={sizeMap[size]}
+              onClick={() => window.open(link.href, "_blank")}
+              cursor="pointer"
+              aria-label={link.name}
+              className="contact-icon"
+            />
+          );
 
-        return iconElement;
-      })}
+          return iconElement;
+        })}
       {contacts?.email ? (
         <Icon
           className="contact-icon"

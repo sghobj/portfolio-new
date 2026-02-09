@@ -5,6 +5,10 @@ export const HOME_QUERY = gql`
     homepage {
       welcomeText
       heroTitle
+      heroImage {
+        url
+        alternativeText
+      }
       heroSubtitle
       githubLink
       expertises {
@@ -19,6 +23,19 @@ export const HOME_QUERY = gql`
         iconName
         iconColor
         documentId
+      }
+      featuredProjects {
+        documentId
+        title
+        description
+        link
+        tags {
+          name
+        }
+        image {
+          url
+          alternativeText
+        }
       }
     }
   }
