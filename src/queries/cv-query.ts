@@ -26,9 +26,10 @@ export const CV_QUERY = gql`
         to
       }
       skills {
-        id
-        level
+        iconColor
+        iconName
         name
+        documentId
       }
       languages {
         id
@@ -36,9 +37,15 @@ export const CV_QUERY = gql`
         level
       }
       certifications {
-        id
-        name
+        certificateLink
         date
+        id
+        image {
+          alternativeText
+          url
+        }
+        instituition
+        name
       }
       publications {
         id

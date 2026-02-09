@@ -12,3 +12,9 @@ export const formatDate = (date: Date | string) => {
     }
   }
 };
+
+export const getStrapiMedia = (url: string | null | undefined) => {
+  if (!url) return "";
+  if (url.startsWith("http") || url.startsWith("//")) return url;
+  return `${import.meta.env.VITE_STRAPI_BASE_URL}${url}`;
+};

@@ -13,17 +13,17 @@ export const Layout = ({ children }: LayoutProps) => {
   const { isLoading } = useSpinner();
   const screenSize = useScreenSize();
 
-  const isSmallScreen = screenSize.width < 840;
+  const isSmallScreen = screenSize.width < 768;
 
   return (
     <div className="layout-main-container">
-      {!isSmallScreen ? <Sidebar /> : null}
-      <div className="main-content">
-        {isSmallScreen ? <BurgerMenu /> : null}
+      {!isSmallScreen && <Sidebar />}
+      <div className={`main-content ${!isSmallScreen ? "with-sidebar" : ""}`}>
+        {isSmallScreen && <BurgerMenu />}
         {isLoading ? (
           <Spinner />
         ) : (
-          <div className={"content-container"}>{children}</div>
+          <div className="content-container">{children}</div>
         )}
       </div>
     </div>

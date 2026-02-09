@@ -1,3 +1,18 @@
 .photo-gallery {
-  padding: 4rem;
+  padding: 0;
+
+  .react-photo-album {
+    border-radius: 1rem;
+    overflow: hidden;
+  }
+
+  .react-photo-album--photo {
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    cursor: pointer;
+
+    &:hover {
+      transform: scale(1.03);
+      z-index: 10;
+    }
+  }
 }

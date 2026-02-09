@@ -1,31 +1,69 @@
-import "./Skills.scss";
-import { Rating } from "../../rating/Rating.tsx";
-import { ComponentCvSkill } from "../../../generated/graphql.ts";
+import { Skill } from "../../../generated/graphql.ts";
+import { Box, SimpleGrid, Text, VStack } from "@chakra-ui/react";
+import { motion } from "framer-motion";
+import * as FaIcons from "react-icons/fa6";
+import * as SiIcons from "react-icons/si";
+import { IconType } from "react-icons";
+
+const MotionVStack = motion(VStack);
+
+const itemVariants = {
+  hidden: { opacity: 0, scale: 0.8 },
+  visible: (i: number) => ({
+    opacity: 1,
+    scale: 1,
+    transition: {
+      delay: i * 0.05,
+      duration: 0.4,
+      ease: "easeOut" as const,
+    },
+  }),
+};
 
 type SkillsProps = {
-  skills: ComponentCvSkill[];
+  skills: Skill[];
+};
+
+const getIcon = (iconName: string): IconType | null => {
+  if (!iconName) return null;
+  const icons = { ...FaIcons, ...SiIcons } as Record<string, IconType>;
+  return icons[iconName] || null;
 };
 
 export const Skills = ({ skills }: SkillsProps) => {
+  if (!skills || skills.length === 0) {
+    return (
+      <Box textAlign="center" color="var(--color-text-secondary)">
+        No technical skills found.
+      </Box>
+    );
+  }
   return (
-    <section className="skills-container">
-      <div className="container-fluid overflow-hidden">
-        <div className="row gy-3 gy-md-4">
-          {skills.map((skill, index) => {
-            return (
-              <div key={index} className="skill-col col-6">
-                <h3 className="skill-name">{skill.name}</h3>
-                <Rating level={skill.level ?? 0} />
-                {/*<div className="progress" role="progressbar" aria-label="Skill level"*/}
-                {/*     aria-valuenow={skill.level}*/}
-                {/*     aria-valuemin={0} aria-valuemax={100} style={{height: "2px"}}>*/}
-                {/*    <div className="progress-bar" style={{width: `${skill.level * 10}%`}}></div>*/}
-                {/*</div>*/}
-              </div>
-            );
-          })}
-        </div>
-      </div>
-    </section>
+    <Box className="skills-container">
+      <SimpleGrid columns={{ base: 3, sm: 4, md: 4 }} gap={{ base: 6, md: 8 }}>
+        {skills.map((skill, index) => {
+          const DynamicIcon = skill.iconName ? getIcon(skill.iconName) : null;
+          const iconColor = skill.iconColor || "var(--color-accent)";
+          const label = skill.name || "";
+
+          return (
+            <MotionVStack
+              key={skill.documentId || index}
+              gap={2}
+              align="center"
+              custom={index}
+              variants={itemVariants}
+            >
+              <Box fontSize="3xl" color={iconColor}>
+                {DynamicIcon && <DynamicIcon />}
+              </Box>
+              <Text className="skill-name" fontSize="xs" textAlign="center">
+                {label}
+              </Text>
+            </MotionVStack>
+          );
+        })}
+      </SimpleGrid>
+    </Box>
   );
 };

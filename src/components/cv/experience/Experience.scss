@@ -1,22 +1,27 @@
-.table {
-  font-family: "Jura", serif;
-  font-optical-sizing: auto;
-}
-
-.description {
-  text-align: justify;
-  font-weight: 300;
-  font-style: normal;
-  font-size: 1rem;
+.cv-company {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
   margin-bottom: 0.5rem;
 }
 
-.position-col {
-  margin: auto;
+.cv-position {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--color-accent);
+  margin-bottom: 0.75rem;
 }
 
-.company {
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: var(--color-dark-blue);
+.cv-description {
+  text-align: left;
+  font-weight: 400;
+  font-size: 1rem;
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+}
+
+.cv-timeline-date {
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  font-size: 0.9rem;
 }

@@ -12,23 +12,43 @@
 
 .nav-link {
   display: flex;
-  text-align: left;
-  color: black;
-  padding: 1rem;
+  align-items: center;
+  gap: 1rem;
   width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
   text-decoration: none;
-  border-radius: 0.4rem;
+  color: var(--color-text-secondary);
+  transition: var(--transition-base);
 
   &:hover,
-  &:focus,
-  &:active {
-    color: var(--midnight-green-1);
+  &:focus {
+    background-color: var(--color-bg-tertiary);
+    color: var(--color-accent);
+    outline: none;
+  }
+
+  &.active {
+    background-color: var(--color-accent);
+    color: var(--color-bg-primary);
+
+    .nav-icon-wrapper,
+    .nav-link-text {
+      color: var(--color-bg-primary);
+    }
   }
 }
 
-.nav-icon {
-  font-size: 20px;
-  margin-right: 10px;
+.nav-icon-wrapper {
+  font-size: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-link-text {
+  font-size: 1.1rem;
+  font-weight: 500;
 }
 
 .nav {

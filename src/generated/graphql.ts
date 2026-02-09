@@ -60,22 +60,33 @@ export type BooleanFilterInput = {
 
 export type ComponentCvCertificates = {
   __typename?: "ComponentCvCertificates";
+  certificateLink?: Maybe<Scalars["String"]["output"]>;
+  credlyId?: Maybe<Scalars["String"]["output"]>;
   date?: Maybe<Scalars["Date"]["output"]>;
   id: Scalars["ID"]["output"];
+  image?: Maybe<UploadFile>;
+  instituition?: Maybe<Scalars["String"]["output"]>;
   name?: Maybe<Scalars["String"]["output"]>;
 };
 
 export type ComponentCvCertificatesFiltersInput = {
   and?: InputMaybe<Array<InputMaybe<ComponentCvCertificatesFiltersInput>>>;
+  certificateLink?: InputMaybe<StringFilterInput>;
+  credlyId?: InputMaybe<StringFilterInput>;
   date?: InputMaybe<DateFilterInput>;
+  instituition?: InputMaybe<StringFilterInput>;
   name?: InputMaybe<StringFilterInput>;
   not?: InputMaybe<ComponentCvCertificatesFiltersInput>;
   or?: InputMaybe<Array<InputMaybe<ComponentCvCertificatesFiltersInput>>>;
 };
 
 export type ComponentCvCertificatesInput = {
+  certificateLink?: InputMaybe<Scalars["String"]["input"]>;
+  credlyId?: InputMaybe<Scalars["String"]["input"]>;
   date?: InputMaybe<Scalars["Date"]["input"]>;
   id?: InputMaybe<Scalars["ID"]["input"]>;
+  image?: InputMaybe<Scalars["ID"]["input"]>;
+  instituition?: InputMaybe<Scalars["String"]["input"]>;
   name?: InputMaybe<Scalars["String"]["input"]>;
 };
 
@@ -187,25 +198,35 @@ export type ComponentCvPublicationInput = {
   id?: InputMaybe<Scalars["ID"]["input"]>;
 };
 
-export type ComponentCvSkill = {
-  __typename?: "ComponentCvSkill";
+export type ComponentHomepageExpertiseCard = {
+  __typename?: "ComponentHomepageExpertiseCard";
+  description?: Maybe<Scalars["String"]["output"]>;
+  iconColor?: Maybe<Scalars["String"]["output"]>;
+  iconName?: Maybe<Scalars["String"]["output"]>;
   id: Scalars["ID"]["output"];
-  level?: Maybe<Scalars["Float"]["output"]>;
-  name?: Maybe<Scalars["String"]["output"]>;
+  title: Scalars["String"]["output"];
 };
 
-export type ComponentCvSkillFiltersInput = {
-  and?: InputMaybe<Array<InputMaybe<ComponentCvSkillFiltersInput>>>;
-  level?: InputMaybe<FloatFilterInput>;
-  name?: InputMaybe<StringFilterInput>;
-  not?: InputMaybe<ComponentCvSkillFiltersInput>;
-  or?: InputMaybe<Array<InputMaybe<ComponentCvSkillFiltersInput>>>;
+export type ComponentHomepageExpertiseCardFiltersInput = {
+  and?: InputMaybe<
+    Array<InputMaybe<ComponentHomepageExpertiseCardFiltersInput>>
+  >;
+  description?: InputMaybe<StringFilterInput>;
+  iconColor?: InputMaybe<StringFilterInput>;
+  iconName?: InputMaybe<StringFilterInput>;
+  not?: InputMaybe<ComponentHomepageExpertiseCardFiltersInput>;
+  or?: InputMaybe<
+    Array<InputMaybe<ComponentHomepageExpertiseCardFiltersInput>>
+  >;
+  title?: InputMaybe<StringFilterInput>;
 };
 
-export type ComponentCvSkillInput = {
+export type ComponentHomepageExpertiseCardInput = {
+  description?: InputMaybe<Scalars["String"]["input"]>;
+  iconColor?: InputMaybe<Scalars["String"]["input"]>;
+  iconName?: InputMaybe<Scalars["String"]["input"]>;
   id?: InputMaybe<Scalars["ID"]["input"]>;
-  level?: InputMaybe<Scalars["Float"]["input"]>;
-  name?: InputMaybe<Scalars["String"]["input"]>;
+  title?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 export type ComponentSharedContact = {
@@ -304,7 +325,8 @@ export type Cv = {
   name?: Maybe<Scalars["String"]["output"]>;
   publications?: Maybe<Array<Maybe<ComponentCvPublication>>>;
   publishedAt?: Maybe<Scalars["DateTime"]["output"]>;
-  skills?: Maybe<Array<Maybe<ComponentCvSkill>>>;
+  skills: Array<Maybe<Skill>>;
+  skills_connection?: Maybe<SkillRelationResponseCollection>;
   subtitle?: Maybe<Scalars["String"]["output"]>;
   updatedAt?: Maybe<Scalars["DateTime"]["output"]>;
 };
@@ -340,7 +362,13 @@ export type CvPublicationsArgs = {
 };
 
 export type CvSkillsArgs = {
-  filters?: InputMaybe<ComponentCvSkillFiltersInput>;
+  filters?: InputMaybe<SkillFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
+};
+
+export type CvSkills_ConnectionArgs = {
+  filters?: InputMaybe<SkillFiltersInput>;
   pagination?: InputMaybe<PaginationArg>;
   sort?: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
 };
@@ -356,7 +384,7 @@ export type CvInput = {
   name?: InputMaybe<Scalars["String"]["input"]>;
   publications?: InputMaybe<Array<InputMaybe<ComponentCvPublicationInput>>>;
   publishedAt?: InputMaybe<Scalars["DateTime"]["input"]>;
-  skills?: InputMaybe<Array<InputMaybe<ComponentCvSkillInput>>>;
+  skills?: InputMaybe<Array<InputMaybe<Scalars["ID"]["input"]>>>;
   subtitle?: InputMaybe<Scalars["String"]["input"]>;
 };
 
@@ -452,7 +480,7 @@ export type GenericMorph =
   | ComponentCvExperience
   | ComponentCvLanguage
   | ComponentCvPublication
-  | ComponentCvSkill
+  | ComponentHomepageExpertiseCard
   | ComponentSharedContact
   | ComponentSharedContactLink
   | ComponentSharedMedia
@@ -460,13 +488,60 @@ export type GenericMorph =
   | ComponentSharedSeo
   | ComponentSharedSlider
   | Cv
+  | Homepage
   | I18NLocale
   | ReviewWorkflowsWorkflow
   | ReviewWorkflowsWorkflowStage
+  | Skill
   | UploadFile
   | UsersPermissionsPermission
   | UsersPermissionsRole
   | UsersPermissionsUser;
+
+export type Homepage = {
+  __typename?: "Homepage";
+  createdAt?: Maybe<Scalars["DateTime"]["output"]>;
+  documentId: Scalars["ID"]["output"];
+  expertises?: Maybe<Array<Maybe<ComponentHomepageExpertiseCard>>>;
+  githubLink?: Maybe<Scalars["String"]["output"]>;
+  heroSubtitle?: Maybe<Scalars["String"]["output"]>;
+  heroTitle?: Maybe<Scalars["String"]["output"]>;
+  publishedAt?: Maybe<Scalars["DateTime"]["output"]>;
+  skills: Array<Maybe<Skill>>;
+  skills_connection?: Maybe<SkillRelationResponseCollection>;
+  updatedAt?: Maybe<Scalars["DateTime"]["output"]>;
+  welcomeText?: Maybe<Scalars["String"]["output"]>;
+};
+
+export type HomepageExpertisesArgs = {
+  filters?: InputMaybe<ComponentHomepageExpertiseCardFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
+};
+
+export type HomepageSkillsArgs = {
+  filters?: InputMaybe<SkillFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
+};
+
+export type HomepageSkills_ConnectionArgs = {
+  filters?: InputMaybe<SkillFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
+};
+
+export type HomepageInput = {
+  expertises?: InputMaybe<
+    Array<InputMaybe<ComponentHomepageExpertiseCardInput>>
+  >;
+  githubLink?: InputMaybe<Scalars["String"]["input"]>;
+  heroSubtitle?: InputMaybe<Scalars["String"]["input"]>;
+  heroTitle?: InputMaybe<Scalars["String"]["input"]>;
+  publishedAt?: InputMaybe<Scalars["DateTime"]["input"]>;
+  skills?: InputMaybe<Array<InputMaybe<Scalars["ID"]["input"]>>>;
+  welcomeText?: InputMaybe<Scalars["String"]["input"]>;
+};
 
 export type I18NLocale = {
   __typename?: "I18NLocale";
@@ -577,13 +652,16 @@ export type Mutation = {
   changePassword?: Maybe<UsersPermissionsLoginPayload>;
   createReviewWorkflowsWorkflow?: Maybe<ReviewWorkflowsWorkflow>;
   createReviewWorkflowsWorkflowStage?: Maybe<ReviewWorkflowsWorkflowStage>;
+  createSkill?: Maybe<Skill>;
   /** Create a new role */
   createUsersPermissionsRole?: Maybe<UsersPermissionsCreateRolePayload>;
   /** Create a new user */
   createUsersPermissionsUser: UsersPermissionsUserEntityResponse;
   deleteCv?: Maybe<DeleteMutationResponse>;
+  deleteHomepage?: Maybe<DeleteMutationResponse>;
   deleteReviewWorkflowsWorkflow?: Maybe<DeleteMutationResponse>;
   deleteReviewWorkflowsWorkflowStage?: Maybe<DeleteMutationResponse>;
+  deleteSkill?: Maybe<DeleteMutationResponse>;
   deleteUploadFile?: Maybe<UploadFile>;
   /** Delete an existing role */
   deleteUsersPermissionsRole?: Maybe<UsersPermissionsDeleteRolePayload>;
@@ -599,8 +677,10 @@ export type Mutation = {
   /** Reset user password. Confirm with a code (resetToken from forgotPassword) */
   resetPassword?: Maybe<UsersPermissionsLoginPayload>;
   updateCv?: Maybe<Cv>;
+  updateHomepage?: Maybe<Homepage>;
   updateReviewWorkflowsWorkflow?: Maybe<ReviewWorkflowsWorkflow>;
   updateReviewWorkflowsWorkflowStage?: Maybe<ReviewWorkflowsWorkflowStage>;
+  updateSkill?: Maybe<Skill>;
   updateUploadFile: UploadFile;
   /** Update an existing role */
   updateUsersPermissionsRole?: Maybe<UsersPermissionsUpdateRolePayload>;
@@ -624,6 +704,11 @@ export type MutationCreateReviewWorkflowsWorkflowStageArgs = {
   status?: InputMaybe<PublicationStatus>;
 };
 
+export type MutationCreateSkillArgs = {
+  data: SkillInput;
+  status?: InputMaybe<PublicationStatus>;
+};
+
 export type MutationCreateUsersPermissionsRoleArgs = {
   data: UsersPermissionsRoleInput;
 };
@@ -637,6 +722,10 @@ export type MutationDeleteReviewWorkflowsWorkflowArgs = {
 };
 
 export type MutationDeleteReviewWorkflowsWorkflowStageArgs = {
+  documentId: Scalars["ID"]["input"];
+};
+
+export type MutationDeleteSkillArgs = {
   documentId: Scalars["ID"]["input"];
 };
 
@@ -679,6 +768,11 @@ export type MutationUpdateCvArgs = {
   status?: InputMaybe<PublicationStatus>;
 };
 
+export type MutationUpdateHomepageArgs = {
+  data: HomepageInput;
+  status?: InputMaybe<PublicationStatus>;
+};
+
 export type MutationUpdateReviewWorkflowsWorkflowArgs = {
   data: ReviewWorkflowsWorkflowInput;
   documentId: Scalars["ID"]["input"];
@@ -687,6 +781,12 @@ export type MutationUpdateReviewWorkflowsWorkflowArgs = {
 
 export type MutationUpdateReviewWorkflowsWorkflowStageArgs = {
   data: ReviewWorkflowsWorkflowStageInput;
+  documentId: Scalars["ID"]["input"];
+  status?: InputMaybe<PublicationStatus>;
+};
+
+export type MutationUpdateSkillArgs = {
+  data: SkillInput;
   documentId: Scalars["ID"]["input"];
   status?: InputMaybe<PublicationStatus>;
 };
@@ -721,6 +821,14 @@ export type PaginationArg = {
   start?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
+export type Photo = {
+  __typename?: "Photo";
+  height?: Maybe<Scalars["Int"]["output"]>;
+  public_id?: Maybe<Scalars["String"]["output"]>;
+  src: Scalars["String"]["output"];
+  width?: Maybe<Scalars["Int"]["output"]>;
+};
+
 export enum PublicationStatus {
   Draft = "DRAFT",
   Published = "PUBLISHED",
@@ -729,16 +837,21 @@ export enum PublicationStatus {
 export type Query = {
   __typename?: "Query";
   cv?: Maybe<Cv>;
+  homepage?: Maybe<Homepage>;
   i18NLocale?: Maybe<I18NLocale>;
   i18NLocales: Array<Maybe<I18NLocale>>;
   i18NLocales_connection?: Maybe<I18NLocaleEntityResponseCollection>;
   me?: Maybe<UsersPermissionsMe>;
+  photos?: Maybe<Array<Maybe<Photo>>>;
   reviewWorkflowsWorkflow?: Maybe<ReviewWorkflowsWorkflow>;
   reviewWorkflowsWorkflowStage?: Maybe<ReviewWorkflowsWorkflowStage>;
   reviewWorkflowsWorkflowStages: Array<Maybe<ReviewWorkflowsWorkflowStage>>;
   reviewWorkflowsWorkflowStages_connection?: Maybe<ReviewWorkflowsWorkflowStageEntityResponseCollection>;
   reviewWorkflowsWorkflows: Array<Maybe<ReviewWorkflowsWorkflow>>;
   reviewWorkflowsWorkflows_connection?: Maybe<ReviewWorkflowsWorkflowEntityResponseCollection>;
+  skill?: Maybe<Skill>;
+  skills: Array<Maybe<Skill>>;
+  skills_connection?: Maybe<SkillEntityResponseCollection>;
   uploadFile?: Maybe<UploadFile>;
   uploadFiles: Array<Maybe<UploadFile>>;
   uploadFiles_connection?: Maybe<UploadFileEntityResponseCollection>;
@@ -751,6 +864,10 @@ export type Query = {
 };
 
 export type QueryCvArgs = {
+  status?: InputMaybe<PublicationStatus>;
+};
+
+export type QueryHomepageArgs = {
   status?: InputMaybe<PublicationStatus>;
 };
 
@@ -771,6 +888,10 @@ export type QueryI18NLocales_ConnectionArgs = {
   pagination?: InputMaybe<PaginationArg>;
   sort?: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
   status?: InputMaybe<PublicationStatus>;
+};
+
+export type QueryPhotosArgs = {
+  folder?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 export type QueryReviewWorkflowsWorkflowArgs = {
@@ -806,6 +927,25 @@ export type QueryReviewWorkflowsWorkflowsArgs = {
 
 export type QueryReviewWorkflowsWorkflows_ConnectionArgs = {
   filters?: InputMaybe<ReviewWorkflowsWorkflowFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
+  status?: InputMaybe<PublicationStatus>;
+};
+
+export type QuerySkillArgs = {
+  documentId: Scalars["ID"]["input"];
+  status?: InputMaybe<PublicationStatus>;
+};
+
+export type QuerySkillsArgs = {
+  filters?: InputMaybe<SkillFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
+  status?: InputMaybe<PublicationStatus>;
+};
+
+export type QuerySkills_ConnectionArgs = {
+  filters?: InputMaybe<SkillFiltersInput>;
   pagination?: InputMaybe<PaginationArg>;
   sort?: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
   status?: InputMaybe<PublicationStatus>;
@@ -961,6 +1101,48 @@ export type ReviewWorkflowsWorkflowStageInput = {
 export type ReviewWorkflowsWorkflowStageRelationResponseCollection = {
   __typename?: "ReviewWorkflowsWorkflowStageRelationResponseCollection";
   nodes: Array<ReviewWorkflowsWorkflowStage>;
+};
+
+export type Skill = {
+  __typename?: "Skill";
+  createdAt?: Maybe<Scalars["DateTime"]["output"]>;
+  documentId: Scalars["ID"]["output"];
+  iconColor?: Maybe<Scalars["String"]["output"]>;
+  iconName: Scalars["String"]["output"];
+  name: Scalars["String"]["output"];
+  publishedAt?: Maybe<Scalars["DateTime"]["output"]>;
+  updatedAt?: Maybe<Scalars["DateTime"]["output"]>;
+};
+
+export type SkillEntityResponseCollection = {
+  __typename?: "SkillEntityResponseCollection";
+  nodes: Array<Skill>;
+  pageInfo: Pagination;
+};
+
+export type SkillFiltersInput = {
+  and?: InputMaybe<Array<InputMaybe<SkillFiltersInput>>>;
+  createdAt?: InputMaybe<DateTimeFilterInput>;
+  documentId?: InputMaybe<IdFilterInput>;
+  iconColor?: InputMaybe<StringFilterInput>;
+  iconName?: InputMaybe<StringFilterInput>;
+  name?: InputMaybe<StringFilterInput>;
+  not?: InputMaybe<SkillFiltersInput>;
+  or?: InputMaybe<Array<InputMaybe<SkillFiltersInput>>>;
+  publishedAt?: InputMaybe<DateTimeFilterInput>;
+  updatedAt?: InputMaybe<DateTimeFilterInput>;
+};
+
+export type SkillInput = {
+  iconColor?: InputMaybe<Scalars["String"]["input"]>;
+  iconName?: InputMaybe<Scalars["String"]["input"]>;
+  name?: InputMaybe<Scalars["String"]["input"]>;
+  publishedAt?: InputMaybe<Scalars["DateTime"]["input"]>;
+};
+
+export type SkillRelationResponseCollection = {
+  __typename?: "SkillRelationResponseCollection";
+  nodes: Array<Skill>;
 };
 
 export type StringFilterInput = {
@@ -1282,6 +1464,8 @@ export type Cv_QueryQuery = {
   cv?: {
     __typename?: "Cv";
     about?: string | null;
+    name?: string | null;
+    subtitle?: string | null;
     coverImageUrl?: string | null;
     experiences?: Array<{
       __typename?: "ComponentCvExperience";
@@ -1303,12 +1487,13 @@ export type Cv_QueryQuery = {
       specialty?: string | null;
       to?: any | null;
     } | null> | null;
-    skills?: Array<{
-      __typename?: "ComponentCvSkill";
-      id: string;
-      level?: number | null;
-      name?: string | null;
-    } | null> | null;
+    skills: Array<{
+      __typename?: "Skill";
+      iconColor?: string | null;
+      iconName: string;
+      name: string;
+      documentId: string;
+    } | null>;
     languages?: Array<{
       __typename?: "ComponentCvLanguage";
       id: string;
@@ -1317,9 +1502,16 @@ export type Cv_QueryQuery = {
     } | null> | null;
     certifications?: Array<{
       __typename?: "ComponentCvCertificates";
-      id: string;
-      name?: string | null;
+      certificateLink?: string | null;
       date?: any | null;
+      id: string;
+      instituition?: string | null;
+      name?: string | null;
+      image?: {
+        __typename?: "UploadFile";
+        alternativeText?: string | null;
+        url: string;
+      } | null;
     } | null> | null;
     publications?: Array<{
       __typename?: "ComponentCvPublication";
@@ -1339,6 +1531,49 @@ export type Cv_QueryQuery = {
       } | null> | null;
     } | null;
   } | null;
+};
+
+export type HomepageQueryVariables = Exact<{ [key: string]: never }>;
+
+export type HomepageQuery = {
+  __typename?: "Query";
+  homepage?: {
+    __typename?: "Homepage";
+    welcomeText?: string | null;
+    heroTitle?: string | null;
+    heroSubtitle?: string | null;
+    githubLink?: string | null;
+    expertises?: Array<{
+      __typename?: "ComponentHomepageExpertiseCard";
+      description?: string | null;
+      iconColor?: string | null;
+      iconName?: string | null;
+      id: string;
+      title: string;
+    } | null> | null;
+    skills: Array<{
+      __typename?: "Skill";
+      name: string;
+      iconName: string;
+      iconColor?: string | null;
+      documentId: string;
+    } | null>;
+  } | null;
+};
+
+export type GetPhotosQueryVariables = Exact<{
+  folder?: InputMaybe<Scalars["String"]["input"]>;
+}>;
+
+export type GetPhotosQuery = {
+  __typename?: "Query";
+  photos?: Array<{
+    __typename?: "Photo";
+    src: string;
+    width?: number | null;
+    height?: number | null;
+    public_id?: string | null;
+  } | null> | null;
 };
 
 export const Contacts_QueryDocument = gql`
@@ -1429,6 +1664,8 @@ export const Cv_QueryDocument = gql`
   query CV_QUERY {
     cv {
       about
+      name
+      subtitle
       coverImageUrl
       experiences {
         id
@@ -1449,9 +1686,10 @@ export const Cv_QueryDocument = gql`
         to
       }
       skills {
-        id
-        level
+        iconColor
+        iconName
         name
+        documentId
       }
       languages {
         id
@@ -1459,9 +1697,15 @@ export const Cv_QueryDocument = gql`
         level
       }
       certifications {
-        id
-        name
+        certificateLink
         date
+        id
+        image {
+          alternativeText
+          url
+        }
+        instituition
+        name
       }
       publications {
         id
@@ -1541,4 +1785,165 @@ export type Cv_QuerySuspenseQueryHookResult = ReturnType<
 export type Cv_QueryQueryResult = Apollo.QueryResult<
   Cv_QueryQuery,
   Cv_QueryQueryVariables
+>;
+export const HomepageDocument = gql`
+  query Homepage {
+    homepage {
+      welcomeText
+      heroTitle
+      heroSubtitle
+      githubLink
+      expertises {
+        description
+        iconColor
+        iconName
+        id
+        title
+      }
+      skills {
+        name
+        iconName
+        iconColor
+        documentId
+      }
+    }
+  }
+`;
+
+/**
+ * __useHomepageQuery__
+ *
+ * To run a query within a React component, call `useHomepageQuery` and pass it any options that fit your needs.
+ * When your component renders, `useHomepageQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useHomepageQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useHomepageQuery(
+  baseOptions?: Apollo.QueryHookOptions<HomepageQuery, HomepageQueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<HomepageQuery, HomepageQueryVariables>(
+    HomepageDocument,
+    options,
+  );
+}
+export function useHomepageLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    HomepageQuery,
+    HomepageQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<HomepageQuery, HomepageQueryVariables>(
+    HomepageDocument,
+    options,
+  );
+}
+export function useHomepageSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<HomepageQuery, HomepageQueryVariables>,
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<HomepageQuery, HomepageQueryVariables>(
+    HomepageDocument,
+    options,
+  );
+}
+export type HomepageQueryHookResult = ReturnType<typeof useHomepageQuery>;
+export type HomepageLazyQueryHookResult = ReturnType<
+  typeof useHomepageLazyQuery
+>;
+export type HomepageSuspenseQueryHookResult = ReturnType<
+  typeof useHomepageSuspenseQuery
+>;
+export type HomepageQueryResult = Apollo.QueryResult<
+  HomepageQuery,
+  HomepageQueryVariables
+>;
+export const GetPhotosDocument = gql`
+  query GetPhotos($folder: String) {
+    photos(folder: $folder) {
+      src
+      width
+      height
+      public_id
+    }
+  }
+`;
+
+/**
+ * __useGetPhotosQuery__
+ *
+ * To run a query within a React component, call `useGetPhotosQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetPhotosQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetPhotosQuery({
+ *   variables: {
+ *      folder: // value for 'folder'
+ *   },
+ * });
+ */
+export function useGetPhotosQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    GetPhotosQuery,
+    GetPhotosQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetPhotosQuery, GetPhotosQueryVariables>(
+    GetPhotosDocument,
+    options,
+  );
+}
+export function useGetPhotosLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetPhotosQuery,
+    GetPhotosQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<GetPhotosQuery, GetPhotosQueryVariables>(
+    GetPhotosDocument,
+    options,
+  );
+}
+export function useGetPhotosSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<GetPhotosQuery, GetPhotosQueryVariables>,
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<GetPhotosQuery, GetPhotosQueryVariables>(
+    GetPhotosDocument,
+    options,
+  );
+}
+export type GetPhotosQueryHookResult = ReturnType<typeof useGetPhotosQuery>;
+export type GetPhotosLazyQueryHookResult = ReturnType<
+  typeof useGetPhotosLazyQuery
+>;
+export type GetPhotosSuspenseQueryHookResult = ReturnType<
+  typeof useGetPhotosSuspenseQuery
+>;
+export type GetPhotosQueryResult = Apollo.QueryResult<
+  GetPhotosQuery,
+  GetPhotosQueryVariables
 >;

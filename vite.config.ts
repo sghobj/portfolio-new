@@ -6,10 +6,12 @@ export default defineConfig({
   test: {
     globals: true,
     environment: "jsdom",
-    setupFiles: "./src/setupTests.ts",
-    coverage: {
-      reporter: ["text", "lcov"],
-      provider: "v8",
+    environmentOptions: {
+      jsdom: {
+        // This reduces noisy jsdom console output in many cases
+        pretendToBeVisual: true,
+      },
     },
+    setupFiles: "./src/test/setupTests.ts",
   },
 });
