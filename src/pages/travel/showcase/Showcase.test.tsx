@@ -7,19 +7,49 @@ import { PHOTOS_QUERY } from "../../../queries/photos.ts";
 import { GeneralProvider } from "../../../context/GeneralContext.tsx";
 
 // Mock framer-motion
-vi.mock("framer-motion", () => {
-  const motion = (component: React.ComponentType<unknown>) => component;
-  motion.div = ({
-    children,
-    ...props
-  }: {
-    children: React.ReactNode;
-    [key: string]: unknown;
-  }) => <div {...props}>{children}</div>;
-  motion.custom = (component: React.ComponentType<unknown>) => component;
+vi.mock("framer-motion", async (importOriginal) => {
+  const actual = (await importOriginal()) as object;
+  const React = await import("react");
+
+  const motionMock = (component: React.ElementType) => {
+    return React.forwardRef<HTMLElement, Record<string, unknown>>(
+      (props, ref) => {
+        const {
+          whileInView,
+          onViewportEnter,
+          viewport,
+          initial,
+          animate,
+          variants,
+          transition,
+          ...rest
+        } = props;
+
+        void whileInView;
+        void onViewportEnter;
+        void viewport;
+        void initial;
+        void animate;
+        void variants;
+        void transition;
+
+        return React.createElement(component as string, { ...rest, ref });
+      },
+    );
+  };
+
+  const motionProxy = new Proxy(motionMock, {
+    get: (target, prop) => {
+      if (typeof prop === "string" && prop !== "forwardRef") {
+        return motionMock(prop as React.ElementType);
+      }
+      return Reflect.get(target, prop);
+    },
+  });
 
   return {
-    motion,
+    ...actual,
+    motion: motionProxy,
   };
 });
 
@@ -85,5 +115,53 @@ describe("Showcase Page", () => {
       screen.getByText(/A collection of moments captured/i),
     ).toBeInTheDocument();
     expect(screen.getByText("My Hobbies & Passion")).toBeInTheDocument();
+    expect(screen.getByText("sarah_ghobj")).toBeInTheDocument();
+  });
+
+  it("handles loading state", () => {
+    const loadingMocks = [
+      {
+        request: {
+          query: PHOTOS_QUERY,
+          variables: { folder: "travel-showcase" },
+        },
+        result: { data: null },
+        delay: 1000,
+      },
+    ];
+    render(
+      <MockedProvider mocks={loadingMocks}>
+        <GeneralProvider>
+          <Provider>
+            <Showcase />
+          </Provider>
+        </GeneralProvider>
+      </MockedProvider>,
+    );
+    // Should not crash
+  });
+
+  it("handles error state", async () => {
+    const errorMocks = [
+      {
+        request: {
+          query: PHOTOS_QUERY,
+          variables: { folder: "travel-showcase" },
+        },
+        error: new Error("Failed to fetch"),
+      },
+    ];
+    render(
+      <MockedProvider mocks={errorMocks}>
+        <GeneralProvider>
+          <Provider>
+            <Showcase />
+          </Provider>
+        </GeneralProvider>
+      </MockedProvider>,
+    );
+    expect(
+      await screen.findByText(/Error loading photos/i),
+    ).toBeInTheDocument();
   });
 });

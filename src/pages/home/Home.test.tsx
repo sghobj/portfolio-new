@@ -6,23 +6,52 @@ import { MockedProvider } from "@apollo/client/testing";
 import { HOME_QUERY } from "../../queries/home-query.ts";
 import { GeneralProvider } from "../../context/GeneralContext.tsx";
 import { BrowserRouter } from "react-router-dom";
-import { ComponentType, ReactElement, ReactNode } from "react";
+import { ReactElement } from "react";
 
 // Mock framer-motion
-vi.mock("framer-motion", () => {
-  const motion = (component: ComponentType<unknown>) => component;
-  motion.div = ({
-    children,
-    ...props
-  }: {
-    children: ReactNode;
-    [key: string]: unknown;
-  }) => <div {...props}>{children}</div>;
-  motion.custom = (component: ComponentType<unknown>) => component;
+vi.mock("framer-motion", async (importOriginal) => {
+  const actual = (await importOriginal()) as object;
+  const React = await import("react");
+
+  const motionMock = (component: React.ElementType) => {
+    return React.forwardRef<HTMLElement, Record<string, unknown>>(
+      (props, ref) => {
+        const {
+          whileInView,
+          onViewportEnter,
+          viewport,
+          initial,
+          animate,
+          variants,
+          transition,
+          ...rest
+        } = props;
+
+        void whileInView;
+        void onViewportEnter;
+        void viewport;
+        void initial;
+        void animate;
+        void variants;
+        void transition;
+
+        return React.createElement(component as string, { ...rest, ref });
+      },
+    );
+  };
+
+  const motionProxy = new Proxy(motionMock, {
+    get: (target, prop) => {
+      if (typeof prop === "string" && prop !== "forwardRef") {
+        return motionMock(prop as React.ElementType);
+      }
+      return Reflect.get(target, prop);
+    },
+  });
 
   return {
-    motion,
-    AnimatePresence: ({ children }: { children: ReactNode }) => children,
+    ...actual,
+    motion: motionProxy,
   };
 });
 
@@ -66,6 +95,21 @@ const mockHomeData = {
         name: "JavaScript",
         iconName: "SiJavascript",
         iconColor: "#F7DF1E",
+      },
+    ],
+    featuredProjects: [
+      {
+        __typename: "Project",
+        documentId: "project-1",
+        title: "Project 1",
+        description: "A great project",
+        link: "https://example.com",
+        tags: [{ __typename: "Tag", name: "React" }],
+        image: {
+          __typename: "UploadFile",
+          url: "/test-image.png",
+          alternativeText: "Test Project",
+        },
       },
     ],
   },
@@ -148,12 +192,12 @@ describe("Home Page", () => {
     expect(screen.getByText("JavaScript")).toBeInTheDocument();
   });
 
-  it("renders the Projects section placeholder", async () => {
+  it("renders the Projects section", async () => {
     renderWithProviders(<Home />);
 
     expect(await screen.findByText("Featured Projects")).toBeInTheDocument();
-    expect(
-      screen.getByText("Project Showcase in Progress"),
-    ).toBeInTheDocument();
+    expect(screen.getByText("Project 1")).toBeInTheDocument();
+    expect(screen.getByText("A great project")).toBeInTheDocument();
+    expect(screen.getByText("React")).toBeInTheDocument();
   });
 });

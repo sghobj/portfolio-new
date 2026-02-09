@@ -311,6 +311,24 @@ export type ComponentSharedSliderFiles_ConnectionArgs = {
   sort?: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
 };
 
+export type ComponentSharedTag = {
+  __typename?: "ComponentSharedTag";
+  id: Scalars["ID"]["output"];
+  name: Scalars["String"]["output"];
+};
+
+export type ComponentSharedTagFiltersInput = {
+  and?: InputMaybe<Array<InputMaybe<ComponentSharedTagFiltersInput>>>;
+  name?: InputMaybe<StringFilterInput>;
+  not?: InputMaybe<ComponentSharedTagFiltersInput>;
+  or?: InputMaybe<Array<InputMaybe<ComponentSharedTagFiltersInput>>>;
+};
+
+export type ComponentSharedTagInput = {
+  id?: InputMaybe<Scalars["ID"]["input"]>;
+  name?: InputMaybe<Scalars["String"]["input"]>;
+};
+
 export type Cv = {
   __typename?: "Cv";
   about?: Maybe<Scalars["String"]["output"]>;
@@ -487,9 +505,11 @@ export type GenericMorph =
   | ComponentSharedRichText
   | ComponentSharedSeo
   | ComponentSharedSlider
+  | ComponentSharedTag
   | Cv
   | Homepage
   | I18NLocale
+  | Project
   | ReviewWorkflowsWorkflow
   | ReviewWorkflowsWorkflowStage
   | Skill
@@ -503,7 +523,10 @@ export type Homepage = {
   createdAt?: Maybe<Scalars["DateTime"]["output"]>;
   documentId: Scalars["ID"]["output"];
   expertises?: Maybe<Array<Maybe<ComponentHomepageExpertiseCard>>>;
+  featuredProjects: Array<Maybe<Project>>;
+  featuredProjects_connection?: Maybe<ProjectRelationResponseCollection>;
   githubLink?: Maybe<Scalars["String"]["output"]>;
+  heroImage?: Maybe<UploadFile>;
   heroSubtitle?: Maybe<Scalars["String"]["output"]>;
   heroTitle?: Maybe<Scalars["String"]["output"]>;
   publishedAt?: Maybe<Scalars["DateTime"]["output"]>;
@@ -515,6 +538,18 @@ export type Homepage = {
 
 export type HomepageExpertisesArgs = {
   filters?: InputMaybe<ComponentHomepageExpertiseCardFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
+};
+
+export type HomepageFeaturedProjectsArgs = {
+  filters?: InputMaybe<ProjectFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
+};
+
+export type HomepageFeaturedProjects_ConnectionArgs = {
+  filters?: InputMaybe<ProjectFiltersInput>;
   pagination?: InputMaybe<PaginationArg>;
   sort?: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
 };
@@ -535,7 +570,9 @@ export type HomepageInput = {
   expertises?: InputMaybe<
     Array<InputMaybe<ComponentHomepageExpertiseCardInput>>
   >;
+  featuredProjects?: InputMaybe<Array<InputMaybe<Scalars["ID"]["input"]>>>;
   githubLink?: InputMaybe<Scalars["String"]["input"]>;
+  heroImage?: InputMaybe<Scalars["ID"]["input"]>;
   heroSubtitle?: InputMaybe<Scalars["String"]["input"]>;
   heroTitle?: InputMaybe<Scalars["String"]["input"]>;
   publishedAt?: InputMaybe<Scalars["DateTime"]["input"]>;
@@ -650,6 +687,7 @@ export type Mutation = {
   __typename?: "Mutation";
   /** Change user password. Confirm with the current password. */
   changePassword?: Maybe<UsersPermissionsLoginPayload>;
+  createProject?: Maybe<Project>;
   createReviewWorkflowsWorkflow?: Maybe<ReviewWorkflowsWorkflow>;
   createReviewWorkflowsWorkflowStage?: Maybe<ReviewWorkflowsWorkflowStage>;
   createSkill?: Maybe<Skill>;
@@ -659,6 +697,7 @@ export type Mutation = {
   createUsersPermissionsUser: UsersPermissionsUserEntityResponse;
   deleteCv?: Maybe<DeleteMutationResponse>;
   deleteHomepage?: Maybe<DeleteMutationResponse>;
+  deleteProject?: Maybe<DeleteMutationResponse>;
   deleteReviewWorkflowsWorkflow?: Maybe<DeleteMutationResponse>;
   deleteReviewWorkflowsWorkflowStage?: Maybe<DeleteMutationResponse>;
   deleteSkill?: Maybe<DeleteMutationResponse>;
@@ -678,6 +717,7 @@ export type Mutation = {
   resetPassword?: Maybe<UsersPermissionsLoginPayload>;
   updateCv?: Maybe<Cv>;
   updateHomepage?: Maybe<Homepage>;
+  updateProject?: Maybe<Project>;
   updateReviewWorkflowsWorkflow?: Maybe<ReviewWorkflowsWorkflow>;
   updateReviewWorkflowsWorkflowStage?: Maybe<ReviewWorkflowsWorkflowStage>;
   updateSkill?: Maybe<Skill>;
@@ -692,6 +732,11 @@ export type MutationChangePasswordArgs = {
   currentPassword: Scalars["String"]["input"];
   password: Scalars["String"]["input"];
   passwordConfirmation: Scalars["String"]["input"];
+};
+
+export type MutationCreateProjectArgs = {
+  data: ProjectInput;
+  status?: InputMaybe<PublicationStatus>;
 };
 
 export type MutationCreateReviewWorkflowsWorkflowArgs = {
@@ -715,6 +760,10 @@ export type MutationCreateUsersPermissionsRoleArgs = {
 
 export type MutationCreateUsersPermissionsUserArgs = {
   data: UsersPermissionsUserInput;
+};
+
+export type MutationDeleteProjectArgs = {
+  documentId: Scalars["ID"]["input"];
 };
 
 export type MutationDeleteReviewWorkflowsWorkflowArgs = {
@@ -770,6 +819,12 @@ export type MutationUpdateCvArgs = {
 
 export type MutationUpdateHomepageArgs = {
   data: HomepageInput;
+  status?: InputMaybe<PublicationStatus>;
+};
+
+export type MutationUpdateProjectArgs = {
+  data: ProjectInput;
+  documentId: Scalars["ID"]["input"];
   status?: InputMaybe<PublicationStatus>;
 };
 
@@ -829,6 +884,59 @@ export type Photo = {
   width?: Maybe<Scalars["Int"]["output"]>;
 };
 
+export type Project = {
+  __typename?: "Project";
+  createdAt?: Maybe<Scalars["DateTime"]["output"]>;
+  description?: Maybe<Scalars["String"]["output"]>;
+  documentId: Scalars["ID"]["output"];
+  image?: Maybe<UploadFile>;
+  link?: Maybe<Scalars["String"]["output"]>;
+  publishedAt?: Maybe<Scalars["DateTime"]["output"]>;
+  tags?: Maybe<Array<Maybe<ComponentSharedTag>>>;
+  title: Scalars["String"]["output"];
+  updatedAt?: Maybe<Scalars["DateTime"]["output"]>;
+};
+
+export type ProjectTagsArgs = {
+  filters?: InputMaybe<ComponentSharedTagFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
+};
+
+export type ProjectEntityResponseCollection = {
+  __typename?: "ProjectEntityResponseCollection";
+  nodes: Array<Project>;
+  pageInfo: Pagination;
+};
+
+export type ProjectFiltersInput = {
+  and?: InputMaybe<Array<InputMaybe<ProjectFiltersInput>>>;
+  createdAt?: InputMaybe<DateTimeFilterInput>;
+  description?: InputMaybe<StringFilterInput>;
+  documentId?: InputMaybe<IdFilterInput>;
+  link?: InputMaybe<StringFilterInput>;
+  not?: InputMaybe<ProjectFiltersInput>;
+  or?: InputMaybe<Array<InputMaybe<ProjectFiltersInput>>>;
+  publishedAt?: InputMaybe<DateTimeFilterInput>;
+  tags?: InputMaybe<ComponentSharedTagFiltersInput>;
+  title?: InputMaybe<StringFilterInput>;
+  updatedAt?: InputMaybe<DateTimeFilterInput>;
+};
+
+export type ProjectInput = {
+  description?: InputMaybe<Scalars["String"]["input"]>;
+  image?: InputMaybe<Scalars["ID"]["input"]>;
+  link?: InputMaybe<Scalars["String"]["input"]>;
+  publishedAt?: InputMaybe<Scalars["DateTime"]["input"]>;
+  tags?: InputMaybe<Array<InputMaybe<ComponentSharedTagInput>>>;
+  title?: InputMaybe<Scalars["String"]["input"]>;
+};
+
+export type ProjectRelationResponseCollection = {
+  __typename?: "ProjectRelationResponseCollection";
+  nodes: Array<Project>;
+};
+
 export enum PublicationStatus {
   Draft = "DRAFT",
   Published = "PUBLISHED",
@@ -843,6 +951,9 @@ export type Query = {
   i18NLocales_connection?: Maybe<I18NLocaleEntityResponseCollection>;
   me?: Maybe<UsersPermissionsMe>;
   photos?: Maybe<Array<Maybe<Photo>>>;
+  project?: Maybe<Project>;
+  projects: Array<Maybe<Project>>;
+  projects_connection?: Maybe<ProjectEntityResponseCollection>;
   reviewWorkflowsWorkflow?: Maybe<ReviewWorkflowsWorkflow>;
   reviewWorkflowsWorkflowStage?: Maybe<ReviewWorkflowsWorkflowStage>;
   reviewWorkflowsWorkflowStages: Array<Maybe<ReviewWorkflowsWorkflowStage>>;
@@ -892,6 +1003,25 @@ export type QueryI18NLocales_ConnectionArgs = {
 
 export type QueryPhotosArgs = {
   folder?: InputMaybe<Scalars["String"]["input"]>;
+};
+
+export type QueryProjectArgs = {
+  documentId: Scalars["ID"]["input"];
+  status?: InputMaybe<PublicationStatus>;
+};
+
+export type QueryProjectsArgs = {
+  filters?: InputMaybe<ProjectFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
+  status?: InputMaybe<PublicationStatus>;
+};
+
+export type QueryProjects_ConnectionArgs = {
+  filters?: InputMaybe<ProjectFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
+  status?: InputMaybe<PublicationStatus>;
 };
 
 export type QueryReviewWorkflowsWorkflowArgs = {
@@ -1543,6 +1673,11 @@ export type HomepageQuery = {
     heroTitle?: string | null;
     heroSubtitle?: string | null;
     githubLink?: string | null;
+    heroImage?: {
+      __typename?: "UploadFile";
+      url: string;
+      alternativeText?: string | null;
+    } | null;
     expertises?: Array<{
       __typename?: "ComponentHomepageExpertiseCard";
       description?: string | null;
@@ -1557,6 +1692,22 @@ export type HomepageQuery = {
       iconName: string;
       iconColor?: string | null;
       documentId: string;
+    } | null>;
+    featuredProjects: Array<{
+      __typename?: "Project";
+      documentId: string;
+      title: string;
+      description?: string | null;
+      link?: string | null;
+      tags?: Array<{
+        __typename?: "ComponentSharedTag";
+        name: string;
+      } | null> | null;
+      image?: {
+        __typename?: "UploadFile";
+        url: string;
+        alternativeText?: string | null;
+      } | null;
     } | null>;
   } | null;
 };
@@ -1630,6 +1781,27 @@ export function useContacts_QueryLazyQuery(
     options,
   );
 }
+// @ts-ignore
+export function useContacts_QuerySuspenseQuery(
+  baseOptions?: Apollo.SuspenseQueryHookOptions<
+    Contacts_QueryQuery,
+    Contacts_QueryQueryVariables
+  >,
+): Apollo.UseSuspenseQueryResult<
+  Contacts_QueryQuery,
+  Contacts_QueryQueryVariables
+>;
+export function useContacts_QuerySuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        Contacts_QueryQuery,
+        Contacts_QueryQueryVariables
+      >,
+): Apollo.UseSuspenseQueryResult<
+  Contacts_QueryQuery | undefined,
+  Contacts_QueryQueryVariables
+>;
 export function useContacts_QuerySuspenseQuery(
   baseOptions?:
     | Apollo.SkipToken
@@ -1761,6 +1933,21 @@ export function useCv_QueryLazyQuery(
     options,
   );
 }
+// @ts-ignore
+export function useCv_QuerySuspenseQuery(
+  baseOptions?: Apollo.SuspenseQueryHookOptions<
+    Cv_QueryQuery,
+    Cv_QueryQueryVariables
+  >,
+): Apollo.UseSuspenseQueryResult<Cv_QueryQuery, Cv_QueryQueryVariables>;
+export function useCv_QuerySuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<Cv_QueryQuery, Cv_QueryQueryVariables>,
+): Apollo.UseSuspenseQueryResult<
+  Cv_QueryQuery | undefined,
+  Cv_QueryQueryVariables
+>;
 export function useCv_QuerySuspenseQuery(
   baseOptions?:
     | Apollo.SkipToken
@@ -1791,6 +1978,10 @@ export const HomepageDocument = gql`
     homepage {
       welcomeText
       heroTitle
+      heroImage {
+        url
+        alternativeText
+      }
       heroSubtitle
       githubLink
       expertises {
@@ -1805,6 +1996,19 @@ export const HomepageDocument = gql`
         iconName
         iconColor
         documentId
+      }
+      featuredProjects {
+        documentId
+        title
+        description
+        link
+        tags {
+          name
+        }
+        image {
+          url
+          alternativeText
+        }
       }
     }
   }
@@ -1846,6 +2050,21 @@ export function useHomepageLazyQuery(
     options,
   );
 }
+// @ts-ignore
+export function useHomepageSuspenseQuery(
+  baseOptions?: Apollo.SuspenseQueryHookOptions<
+    HomepageQuery,
+    HomepageQueryVariables
+  >,
+): Apollo.UseSuspenseQueryResult<HomepageQuery, HomepageQueryVariables>;
+export function useHomepageSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<HomepageQuery, HomepageQueryVariables>,
+): Apollo.UseSuspenseQueryResult<
+  HomepageQuery | undefined,
+  HomepageQueryVariables
+>;
 export function useHomepageSuspenseQuery(
   baseOptions?:
     | Apollo.SkipToken
@@ -1922,6 +2141,21 @@ export function useGetPhotosLazyQuery(
     options,
   );
 }
+// @ts-ignore
+export function useGetPhotosSuspenseQuery(
+  baseOptions?: Apollo.SuspenseQueryHookOptions<
+    GetPhotosQuery,
+    GetPhotosQueryVariables
+  >,
+): Apollo.UseSuspenseQueryResult<GetPhotosQuery, GetPhotosQueryVariables>;
+export function useGetPhotosSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<GetPhotosQuery, GetPhotosQueryVariables>,
+): Apollo.UseSuspenseQueryResult<
+  GetPhotosQuery | undefined,
+  GetPhotosQueryVariables
+>;
 export function useGetPhotosSuspenseQuery(
   baseOptions?:
     | Apollo.SkipToken

@@ -1,26 +1,29 @@
 import "./Home.scss";
-import { useQuery } from "@apollo/client";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import {
   Box,
   Button,
   Container,
   Heading,
   HStack,
+  Image,
+  Link as ChakraLink,
   SimpleGrid,
   Stack,
   Text,
   VStack,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
-import { FaArrowRight, FaGithub, FaRocket } from "react-icons/fa";
+import { FaArrowRight, FaExternalLinkAlt, FaRocket } from "react-icons/fa";
 import * as FaIcons from "react-icons/fa6";
 import * as SiIcons from "react-icons/si";
 import { IconType } from "react-icons";
 import { HOME_QUERY } from "../../queries/home-query.ts";
 import { HomepageQuery } from "../../generated/graphql.ts";
 import { useSpinner } from "../../hooks/useSpinner.ts";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { getStrapiMedia } from "../../utils/general.ts";
+import { useQuery } from "@apollo/client";
 
 const MotionBox = motion(Box);
 const MotionVStack = motion(VStack);
@@ -31,8 +34,20 @@ const getIcon = (iconName: string): IconType | null => {
   return icons[iconName] || null;
 };
 
+const fadeIn: Variants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: "easeOut" },
+  },
+};
+
 export const Home = () => {
   const { setLoading } = useSpinner();
+  const [expertisesAnimated, setExpertisesAnimated] = useState(false);
+  const [toolsAnimated, setToolsAnimated] = useState(false);
+  const [projectsAnimated, setProjectsAnimated] = useState(false);
   const { loading, data } = useQuery<HomepageQuery>(HOME_QUERY, {
     notifyOnNetworkStatusChange: true,
   });
@@ -40,11 +55,6 @@ export const Home = () => {
   useEffect(() => {
     setLoading(loading);
   }, [loading, setLoading]);
-
-  const fadeIn = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
-  };
 
   const homepage = data?.homepage;
 
@@ -56,6 +66,7 @@ export const Home = () => {
     );
   }
 
+  // Use a local variable to store data to avoid unmounting during refetch
   if (!homepage) return null;
 
   return (
@@ -64,91 +75,98 @@ export const Home = () => {
       <Box className="hero-section">
         <Box className="hero-bg-overlay" />
         <Container maxW="1200px" position="relative" zIndex={2}>
-          <MotionVStack
-            align={{ base: "center", md: "flex-start" }}
-            gap={8}
-            initial="hidden"
-            animate="visible"
-            variants={fadeIn}
+          <SimpleGrid
+            columns={{ base: 1, md: 2 }}
+            gap={{ base: 12, md: 8 }}
+            alignItems="center"
           >
-            <VStack
+            <MotionVStack
               align={{ base: "center", md: "flex-start" }}
-              gap={4}
-              textAlign={{ base: "center", md: "left" }}
+              gap={8}
+              initial="hidden"
+              animate="visible"
+              variants={fadeIn}
             >
-              {homepage?.welcomeText && (
-                <Text
-                  color="var(--color-accent)"
-                  fontWeight="bold"
-                  fontSize="sm"
-                  textTransform="uppercase"
-                  letterSpacing="widest"
-                >
-                  {homepage?.welcomeText}
-                </Text>
-              )}
-              {homepage?.heroTitle && (
-                <Heading
-                  as="h1"
-                  size="4xl"
-                  className="hero-title"
-                  color="var(--color-text-primary)"
-                  maxW="800px"
-                >
-                  {homepage?.heroTitle}
-                </Heading>
-              )}
+              <VStack
+                align={{ base: "center", md: "flex-start" }}
+                gap={4}
+                textAlign={{ base: "center", md: "left" }}
+              >
+                {homepage?.welcomeText && (
+                  <Text
+                    color="var(--color-accent)"
+                    fontWeight="bold"
+                    fontSize="sm"
+                    textTransform="uppercase"
+                    letterSpacing="widest"
+                  >
+                    {homepage?.welcomeText}
+                  </Text>
+                )}
+                {homepage?.heroTitle && (
+                  <Heading
+                    as="h1"
+                    size="4xl"
+                    className="hero-title"
+                    color="var(--color-text-primary)"
+                    maxW="800px"
+                  >
+                    {homepage?.heroTitle}
+                  </Heading>
+                )}
 
-              {homepage?.heroSubtitle && (
-                <Text
-                  fontSize="xl"
-                  color="var(--color-text-secondary)"
-                  maxW="600px"
-                  className="hero-subtitle"
-                >
-                  {homepage?.heroSubtitle}
-                </Text>
-              )}
-            </VStack>
+                {homepage?.heroSubtitle && (
+                  <Text
+                    fontSize="xl"
+                    color="var(--color-text-secondary)"
+                    maxW="600px"
+                    className="hero-subtitle"
+                  >
+                    {homepage?.heroSubtitle}
+                  </Text>
+                )}
+              </VStack>
 
-            <HStack
-              gap={4}
-              pt={4}
-              direction={{ base: "column", sm: "row" }}
-              width={{ base: "full", sm: "auto" }}
-              justify="center"
+              <HStack
+                gap={4}
+                pt={4}
+                direction={{ base: "column", sm: "row" }}
+                width={{ base: "full", sm: "auto" }}
+                justify="center"
+              >
+                <Button
+                  asChild
+                  size="xl"
+                  className="btn-primary"
+                  borderRadius="full"
+                  px={8}
+                  width={{ base: "full", sm: "auto" }}
+                >
+                  <Link to="/cv">
+                    View My CV <FaArrowRight style={{ marginLeft: "8px" }} />
+                  </Link>
+                </Button>
+              </HStack>
+            </MotionVStack>
+
+            <MotionBox
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
+              display="flex"
+              justifyContent="center"
+              position="relative"
             >
-              <Button
-                asChild
-                size="xl"
-                className="btn-primary"
-                borderRadius="full"
-                px={8}
-                width={{ base: "full", sm: "auto" }}
-              >
-                <Link to="/cv">
-                  View My CV <FaArrowRight style={{ marginLeft: "8px" }} />
-                </Link>
-              </Button>
-              <Button
-                asChild
-                size="xl"
-                variant="outline"
-                className="btn-outline"
-                borderRadius="full"
-                px={8}
-                width={{ base: "full", sm: "auto" }}
-              >
-                <a
-                  href={homepage?.githubLink || "https://github.com/sghobj"}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <FaGithub style={{ marginRight: "8px" }} /> GitHub
-                </a>
-              </Button>
-            </HStack>
-          </MotionVStack>
+              <Box className="hero-image-wrapper">
+                <Box className="hero-image-backdrop" />
+                <Image
+                  src={getStrapiMedia(homepage.heroImage?.url)}
+                  alt={homepage.heroImage?.alternativeText || "Sarah Ghobj"}
+                  className="hero-image"
+                />
+              </Box>
+            </MotionBox>
+          </SimpleGrid>
         </Container>
       </Box>
 
@@ -190,23 +208,25 @@ export const Home = () => {
               return (
                 <MotionBox
                   key={exp.id}
-                  className="skill-card"
+                  className="skill-card expertise-card"
                   variants={fadeIn}
-                  initial="hidden"
+                  initial={expertisesAnimated ? "visible" : "hidden"}
                   whileInView="visible"
+                  onViewportEnter={() => setExpertisesAnimated(true)}
                   whileHover={{
-                    y: -5,
+                    y: -8,
                     backgroundColor: "var(--color-bg-tertiary)",
-                    borderColor: "var(--color-accent)",
                   }}
-                  viewport={{ once: true }}
+                  viewport={{
+                    once: true,
+                    amount: 0.1,
+                  }}
                   display="flex"
                   flexDirection="column"
                   height="100%"
-                  border="1px solid transparent"
                   position="relative"
                   overflow="hidden"
-                  p={{ base: 6, md: 8 }}
+                  p={{ base: 6, md: 6 }}
                   alignItems={{ base: "center", md: "flex-start" }}
                   textAlign={{ base: "center", md: "left" }}
                 >
@@ -264,10 +284,18 @@ export const Home = () => {
                   <MotionVStack
                     key={tool.documentId || idx}
                     gap={3}
-                    initial={{ opacity: 0, scale: 0.8 }}
+                    initial={
+                      toolsAnimated
+                        ? { opacity: 1, scale: 1 }
+                        : { opacity: 0, scale: 0.8 }
+                    }
                     whileInView={{ opacity: 1, scale: 1 }}
+                    onViewportEnter={() => setToolsAnimated(true)}
                     whileHover={{ y: -5 }}
-                    viewport={{ once: true }}
+                    viewport={{
+                      once: true,
+                      amount: 0.1,
+                    }}
                     transition={{ delay: idx * 0.05 }}
                   >
                     <Box
@@ -311,29 +339,115 @@ export const Home = () => {
               fontSize="lg"
               textAlign={{ base: "center", md: "left" }}
             >
-              Coming soon. I am currently working on side projects to showcase
-              my skills outside of confidential professional work.
+              A selection of my recent work and side projects.
             </Text>
           </VStack>
 
-          <Box className="project-placeholder">
-            <VStack gap={4} textAlign="center">
-              <Box color="var(--color-violet)" fontSize="4xl">
-                <FaRocket />
-              </Box>
-              <Text
-                fontSize="xl"
-                fontWeight="semibold"
-                color="var(--color-text-primary)"
-              >
-                Project Showcase in Progress
-              </Text>
-              <Text maxW="500px" color="var(--color-text-secondary)">
-                Check back soon to see smaller projects and experiments I've
-                been working on in my free time.
-              </Text>
-            </VStack>
-          </Box>
+          <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} gap={8}>
+            {homepage?.featuredProjects.map((project, index) => {
+              if (!project) return null;
+              return (
+                <MotionBox
+                  key={project.documentId || index}
+                  className="project-card"
+                  variants={fadeIn}
+                  initial={projectsAnimated ? "visible" : "hidden"}
+                  whileInView="visible"
+                  onViewportEnter={() => setProjectsAnimated(true)}
+                  viewport={{
+                    once: true,
+                    amount: 0.1,
+                  }}
+                  transition={{ delay: index * 0.1 }}
+                >
+                  <Box className="project-image">
+                    <a
+                      href={project.link || "#"}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <img
+                        src={getStrapiMedia(project.image?.url)}
+                        alt={project.image?.alternativeText || project.title}
+                      />
+                      <Box className="project-overlay" />
+                    </a>
+                  </Box>
+                  <Box className="project-content">
+                    <HStack justify="space-between" mb={3}>
+                      <HStack gap={2}>
+                        {project.tags?.map((tag, tagIdx) => {
+                          if (!tag) return null;
+                          return (
+                            <Text
+                              key={tagIdx}
+                              fontSize="xs"
+                              fontWeight="bold"
+                              color="var(--color-bg-primary)"
+                              bg="var(--color-accent)"
+                              px={2}
+                              py={1}
+                              borderRadius="full"
+                              textTransform="uppercase"
+                            >
+                              {tag.name}
+                            </Text>
+                          );
+                        })}
+                      </HStack>
+                      <ChakraLink
+                        href={project.link || "#"}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <FaExternalLinkAlt color="var(--color-accent)" />
+                      </ChakraLink>
+                    </HStack>
+                    <Heading
+                      as="h3"
+                      size="md"
+                      mb={2}
+                      color="var(--color-text-primary)"
+                      className="project-title-link"
+                    >
+                      <ChakraLink
+                        href={project.link || "#"}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {project.title}
+                      </ChakraLink>
+                    </Heading>
+                    <Text fontSize="sm" color="var(--color-text-secondary)">
+                      {project.description}
+                    </Text>
+                  </Box>
+                </MotionBox>
+              );
+            })}
+          </SimpleGrid>
+
+          {/* Optional: keep the placeholder text below if needed, or remove it */}
+          {homepage?.featuredProjects.length === 0 && (
+            <Box className="project-placeholder">
+              <VStack gap={4} textAlign="center">
+                <Box color="var(--color-violet)" fontSize="4xl">
+                  <FaRocket />
+                </Box>
+                <Text
+                  fontSize="xl"
+                  fontWeight="semibold"
+                  color="var(--color-text-primary)"
+                >
+                  Project Showcase in Progress
+                </Text>
+                <Text maxW="500px" color="var(--color-text-secondary)">
+                  Check back soon to see smaller projects and experiments I've
+                  been working on in my free time.
+                </Text>
+              </VStack>
+            </Box>
+          )}
         </Container>
       </Box>
 
@@ -352,14 +466,8 @@ export const Home = () => {
                 Let's connect
               </Heading>
               <Text color="var(--color-text-secondary)">
-                Open for interesting projects and collaborations, or see my{" "}
-                <Link
-                  to="/travel/showcase"
-                  style={{ color: "var(--color-accent)", fontWeight: "600" }}
-                >
-                  photography
-                </Link>
-                .
+                Open for interesting projects and collaborations. Feel free to
+                reach out!
               </Text>
             </VStack>
             <Button
