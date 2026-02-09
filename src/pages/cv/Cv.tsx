@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "@apollo/client";
 import "./Cv.scss";
 import { CV_QUERY } from "../../queries/cv-query.ts";
@@ -6,8 +6,9 @@ import {
   ComponentCvCertificates,
   ComponentCvEducation,
   ComponentCvExperience,
-  Cv_QueryQuery,
-  Skill,
+  ComponentCvLanguage,
+  ComponentCvPublication,
+  ComponentCvSkill,
 } from "../../generated/graphql.ts";
 import { useSpinner } from "../../hooks/useSpinner.ts";
 import {
@@ -27,39 +28,37 @@ import { Certificates } from "../../components/cv/certificates/Certificates.tsx"
 
 const MotionBox = motion(Box);
 
+type CV_Type = {
+  skills?: ComponentCvSkill[];
+  experiences?: ComponentCvExperience[];
+  education?: ComponentCvEducation[];
+  languages?: ComponentCvLanguage[];
+  publications?: ComponentCvPublication[];
+  certifications?: ComponentCvCertificates[];
+  about?: string;
+};
+
 export const Cv = () => {
+  const [cv, setCv] = useState<CV_Type>();
   const { setLoading } = useSpinner();
-  const { loading, data, error } = useQuery<Cv_QueryQuery>(CV_QUERY, {
-    notifyOnNetworkStatusChange: true,
-  });
+  const { loading, data, error } = useQuery(CV_QUERY);
 
   useEffect(() => {
-    setLoading(loading);
-  }, [loading, setLoading]);
+    if (data && loading) {
+      setLoading(false);
+    }
+  }, [data, loading, setLoading]);
 
-  if (error) {
-    console.error(error);
-  }
+  useEffect(() => {
+    if (data?.cv) {
+      setCv(data.cv);
+      setLoading(false);
+    } else if (error) {
+      console.log(error);
+    }
+  }, [data, error, setLoading]);
 
-  const cv = data?.cv;
-
-  if (!cv && !loading) {
-    return (
-      <Box p={8} textAlign="center">
-        <Text>No CV data found.</Text>
-      </Box>
-    );
-  }
-
-  if (!cv) return null;
-
-  const experiences =
-    cv.experiences?.filter((i): i is ComponentCvExperience => !!i) || [];
-  const education =
-    cv.education?.filter((i): i is ComponentCvEducation => !!i) || [];
-  const skills = cv.skills?.filter((i): i is Skill => !!i) || [];
-  const certifications =
-    cv.certifications?.filter((i): i is ComponentCvCertificates => !!i) || [];
+  if (!data) return null;
 
   const fadeIn = {
     hidden: { opacity: 0, y: 20 },
@@ -154,6 +153,20 @@ export const Cv = () => {
                   textTransform="uppercase"
                   mb={1}
                 >
+                  Email
+                </Text>
+                <Text color="var(--color-text-secondary)" fontSize="sm">
+                  sarahghobj@hotmail.com
+                </Text>
+              </Box>
+              <Box>
+                <Text
+                  fontWeight="bold"
+                  color="var(--color-text-primary)"
+                  fontSize="xs"
+                  textTransform="uppercase"
+                  mb={1}
+                >
                   Location
                 </Text>
                 <Text color="var(--color-text-secondary)" fontSize="sm">
@@ -226,9 +239,7 @@ export const Cv = () => {
               >
                 Experience
               </Heading>
-              {experiences.length > 0 && (
-                <Experience experiences={experiences} />
-              )}
+              {cv?.experiences && <Experience experiences={cv.experiences} />}
             </MotionBox>
 
             <MotionBox
@@ -248,7 +259,7 @@ export const Cv = () => {
               >
                 Education
               </Heading>
-              {education.length > 0 && <Education education={education} />}
+              {cv?.education && <Education education={cv.education} />}
             </MotionBox>
           </VStack>
 
@@ -270,7 +281,7 @@ export const Cv = () => {
               >
                 Technical Skills
               </Heading>
-              {skills.length > 0 && <Skills skills={skills} />}
+              {cv?.skills && <Skills skills={cv.skills} />}
             </MotionBox>
 
             <MotionBox
@@ -290,7 +301,7 @@ export const Cv = () => {
               >
                 Certifications
               </Heading>
-              <Certificates certificates={certifications} />
+              <Certificates certificates={cv?.certifications || []} />
             </MotionBox>
           </VStack>
         </Grid>

@@ -1,4 +1,4 @@
-import { Skill } from "../../../generated/graphql.ts";
+import { ComponentCvSkill } from "../../../generated/graphql.ts";
 import { Box, SimpleGrid, Text, VStack } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import * as FaIcons from "react-icons/fa6";
@@ -7,21 +7,8 @@ import { IconType } from "react-icons";
 
 const MotionVStack = motion(VStack);
 
-const itemVariants = {
-  hidden: { opacity: 0, scale: 0.8 },
-  visible: (i: number) => ({
-    opacity: 1,
-    scale: 1,
-    transition: {
-      delay: i * 0.05,
-      duration: 0.4,
-      ease: "easeOut" as const,
-    },
-  }),
-};
-
 type SkillsProps = {
-  skills: Skill[];
+  skills: ComponentCvSkill[];
 };
 
 const getIcon = (iconName: string): IconType | null => {
@@ -48,11 +35,13 @@ export const Skills = ({ skills }: SkillsProps) => {
 
           return (
             <MotionVStack
-              key={skill.documentId || index}
+              key={skill.id || index}
               gap={2}
               align="center"
-              custom={index}
-              variants={itemVariants}
+              initial={{ opacity: 0, scale: 0.8 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.05 }}
             >
               <Box fontSize="3xl" color={iconColor}>
                 {DynamicIcon && <DynamicIcon />}
