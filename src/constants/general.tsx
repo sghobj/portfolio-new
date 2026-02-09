@@ -1,4 +1,5 @@
-import { FaHome, FaUser } from "react-icons/fa"; // src/routes.ts
+import { FaCamera, FaHome } from "react-icons/fa";
+import { CvIcon } from "../components/icons/CvIcon.tsx"; // src/routes.ts
 
 export const links = [
   {
@@ -9,13 +10,13 @@ export const links = [
   },
   {
     label: "CV",
-    icon: <FaUser className="nav-icon" />,
+    icon: <CvIcon className="nav-icon" />,
     href: "/cv",
     testId: "link-cv",
   },
   {
-    label: "Showcase",
-    icon: <FaUser className="nav-icon" />,
+    label: "Photography",
+    icon: <FaCamera className="nav-icon" />,
     href: "/travel/showcase",
     testId: "link-showcase",
   },

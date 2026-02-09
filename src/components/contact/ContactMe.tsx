@@ -1,4 +1,4 @@
-import { HStack, Icon } from "@chakra-ui/react";
+import { HStack, Icon, VStack } from "@chakra-ui/react";
 import { Contact } from "../../types/contacts.ts";
 import { IconType } from "react-icons";
 import { FaInstagram, FaLinkedin, FaXingSquare } from "react-icons/fa";
@@ -16,6 +16,7 @@ const iconMap: Record<string, IconType> = {
 
 type ContactMeProps = {
   size?: "sm" | "md" | "lg";
+  vertical?: boolean;
 };
 
 const sizeMap: Record<NonNullable<ContactMeProps["size"]>, string> = {
@@ -24,7 +25,10 @@ const sizeMap: Record<NonNullable<ContactMeProps["size"]>, string> = {
   lg: "2em",
 };
 
-export const ContactMe = ({ size = "md" }: ContactMeProps) => {
+export const ContactMe = ({
+  size = "md",
+  vertical = false,
+}: ContactMeProps) => {
   const [contacts, setContacts] = useState<Contact>();
 
   const { data } = useQuery(CONTACTS_QUERY);
@@ -36,11 +40,15 @@ export const ContactMe = ({ size = "md" }: ContactMeProps) => {
     }
   }, [data]);
 
+  const Container = vertical ? VStack : HStack;
+
   return (
-    <HStack className="contacts-div">
+    <Container className="contacts-div">
       {contacts?.socialMedia.map((link) => {
-        const IconComponent = iconMap[link.name.toLowerCase()];
-        return (
+        const nameLower = link.name.toLowerCase();
+        const IconComponent = iconMap[nameLower];
+
+        const iconElement = (
           <Icon
             as={IconComponent}
             key={link.href}
@@ -51,6 +59,8 @@ export const ContactMe = ({ size = "md" }: ContactMeProps) => {
             className="contact-icon"
           />
         );
+
+        return iconElement;
       })}
       {contacts?.email ? (
         <Icon
@@ -58,10 +68,11 @@ export const ContactMe = ({ size = "md" }: ContactMeProps) => {
           boxSize={`calc(${sizeMap[size]} + 0.2em)`}
           onClick={() => (window.location.href = `mailto:${contacts?.email}`)}
           cursor="pointer"
+          aria-label="Email"
         >
           <MdEmail />
         </Icon>
       ) : null}
-    </HStack>
+    </Container>
   );
 };
