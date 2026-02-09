@@ -10,6 +10,7 @@ import { ComponentType, ReactElement, ReactNode } from "react";
 // Mock framer-motion
 vi.mock("framer-motion", () => {
   const motion = (component: ComponentType<unknown>) => component;
+  // @ts-ignore
   motion.div = ({
     children,
     ...props
@@ -17,6 +18,7 @@ vi.mock("framer-motion", () => {
     children: ReactNode;
     [key: string]: unknown;
   }) => <div {...props}>{children}</div>;
+  // @ts-ignore
   motion.custom = (component: ComponentType<unknown>) => component;
 
   return {
@@ -28,7 +30,7 @@ vi.mock("framer-motion", () => {
 const mockHomeData = {
   homepage: {
     __typename: "Homepage",
-    welcomeText: "Welcome to my portfolio",
+    welcomeText: "Building robust solutions with a minimalist touch.",
     heroTitle: "Building robust solutions with a minimalist touch.",
     heroSubtitle: "I'm Sarah Ghobj, a Full Stack Developer",
     githubLink: "https://github.com/sarahghobj",
