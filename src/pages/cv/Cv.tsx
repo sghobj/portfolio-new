@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useQuery } from "@apollo/client";
 import "./Cv.scss";
 import { CV_QUERY } from "../../queries/cv-query.ts";
@@ -6,20 +6,11 @@ import {
   ComponentCvCertificates,
   ComponentCvEducation,
   ComponentCvExperience,
-  ComponentCvLanguage,
-  ComponentCvPublication,
-  ComponentCvSkill,
+  Cv_QueryQuery,
+  Skill
 } from "../../generated/graphql.ts";
 import { useSpinner } from "../../hooks/useSpinner.ts";
-import {
-  Box,
-  Grid,
-  Heading,
-  Separator,
-  SimpleGrid,
-  Text,
-  VStack,
-} from "@chakra-ui/react";
+import { Box, Grid, Heading, Separator, SimpleGrid, Text, VStack } from "@chakra-ui/react";
 import { Experience } from "../../components/cv/experience/Experience.tsx";
 import { Education } from "../../components/cv/education/Education.tsx";
 import { Skills } from "../../components/cv/skills/Skills.tsx";
@@ -28,37 +19,38 @@ import { Certificates } from "../../components/cv/certificates/Certificates.tsx"
 
 const MotionBox = motion(Box);
 
-type CV_Type = {
-  skills?: ComponentCvSkill[];
-  experiences?: ComponentCvExperience[];
-  education?: ComponentCvEducation[];
-  languages?: ComponentCvLanguage[];
-  publications?: ComponentCvPublication[];
-  certifications?: ComponentCvCertificates[];
-  about?: string;
-};
-
 export const Cv = () => {
-  const [cv, setCv] = useState<CV_Type>();
   const { setLoading } = useSpinner();
-  const { loading, data, error } = useQuery(CV_QUERY);
+  const { loading, data, error } = useQuery<Cv_QueryQuery>(CV_QUERY);
 
   useEffect(() => {
-    if (data && loading) {
-      setLoading(false);
-    }
-  }, [data, loading, setLoading]);
+    setLoading(loading);
+    return () => setLoading(false);
+  }, [loading, setLoading]);
 
-  useEffect(() => {
-    if (data?.cv) {
-      setCv(data.cv);
-      setLoading(false);
-    } else if (error) {
-      console.log(error);
-    }
-  }, [data, error, setLoading]);
+  if (error) {
+    console.error(error);
+  }
 
-  if (!data) return null;
+  const cv = data?.cv;
+
+  if (!cv && !loading) {
+    return (
+      <Box p={8} textAlign="center">
+        <Text>No CV data found.</Text>
+      </Box>
+    );
+  }
+
+  if (!cv) return null;
+
+  const experiences =
+    cv.experiences?.filter((i): i is ComponentCvExperience => !!i) || [];
+  const education =
+    cv.education?.filter((i): i is ComponentCvEducation => !!i) || [];
+  const skills = cv.skills?.filter((i): i is Skill => !!i) || [];
+  const certifications =
+    cv.certifications?.filter((i): i is ComponentCvCertificates => !!i) || [];
 
   const fadeIn = {
     hidden: { opacity: 0, y: 20 },
@@ -153,20 +145,6 @@ export const Cv = () => {
                   textTransform="uppercase"
                   mb={1}
                 >
-                  Email
-                </Text>
-                <Text color="var(--color-text-secondary)" fontSize="sm">
-                  sarahghobj@hotmail.com
-                </Text>
-              </Box>
-              <Box>
-                <Text
-                  fontWeight="bold"
-                  color="var(--color-text-primary)"
-                  fontSize="xs"
-                  textTransform="uppercase"
-                  mb={1}
-                >
                   Location
                 </Text>
                 <Text color="var(--color-text-secondary)" fontSize="sm">
@@ -239,7 +217,9 @@ export const Cv = () => {
               >
                 Experience
               </Heading>
-              {cv?.experiences && <Experience experiences={cv.experiences} />}
+              {experiences.length > 0 && (
+                <Experience experiences={experiences} />
+              )}
             </MotionBox>
 
             <MotionBox
@@ -259,7 +239,7 @@ export const Cv = () => {
               >
                 Education
               </Heading>
-              {cv?.education && <Education education={cv.education} />}
+              {education.length > 0 && <Education education={education} />}
             </MotionBox>
           </VStack>
 
@@ -281,7 +261,7 @@ export const Cv = () => {
               >
                 Technical Skills
               </Heading>
-              {cv?.skills && <Skills skills={cv.skills} />}
+              {skills.length > 0 && <Skills skills={skills} />}
             </MotionBox>
 
             <MotionBox
@@ -301,7 +281,7 @@ export const Cv = () => {
               >
                 Certifications
               </Heading>
-              <Certificates certificates={cv?.certifications || []} />
+              <Certificates certificates={certifications} />
             </MotionBox>
           </VStack>
         </Grid>
