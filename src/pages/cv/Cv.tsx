@@ -185,7 +185,7 @@ export const Cv = () => {
                   GitHub
                 </Text>
                 <Text color="var(--color-text-secondary)" fontSize="sm">
-                  github.com/sarahghobj
+                  github.com/sghobj
                 </Text>
               </Box>
             </SimpleGrid>
