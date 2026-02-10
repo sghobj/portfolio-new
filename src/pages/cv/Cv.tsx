@@ -13,7 +13,6 @@ import { Education } from "../../components/cv/education/Education.tsx";
 import { Skills } from "../../components/cv/skills/Skills.tsx";
 import { motion, Variants } from "framer-motion";
 import { Certificates } from "../../components/cv/certificates/Certificates.tsx";
-import { Link } from "react-router-dom";
 import { useSpinner } from "../../hooks/useSpinner.ts";
 import { useEffect, useState } from "react";
 import { useQuery } from "@apollo/client";
@@ -25,6 +24,7 @@ import {
   Cv_QueryQuery,
   Skill,
 } from "../../generated/graphql.ts";
+import { Link } from "react-router-dom";
 
 const MotionBox = motion(Box);
 
@@ -182,7 +182,9 @@ export const Cv = () => {
                 </Text>
                 <Link
                   color="var(--color-text-secondary)"
-                  to={"linkedin.com/in/sarahghobj"}
+                  to={"https://www.linkedin.com/in/sarah-ghobj/"}
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   linkedin.com/in/sarahghobj
                 </Link>
